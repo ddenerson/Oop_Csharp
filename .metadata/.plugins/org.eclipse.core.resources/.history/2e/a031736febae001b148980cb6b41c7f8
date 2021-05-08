@@ -1,0 +1,13 @@
+package model;
+
+public class Estoque {
+
+	private int id;
+	private Produto produto;
+	private int quantidade;
+	private double valor_unitario;
+	private Date data_criacao;
+	private Date data_modificado;
+	
+	
+}

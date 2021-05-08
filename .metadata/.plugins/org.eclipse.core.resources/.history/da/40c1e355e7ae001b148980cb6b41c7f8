@@ -1,0 +1,18 @@
+package model;
+
+import java.sql.Date;
+
+public class Fornecedor
+{
+	private int id;
+	private String nome;
+	private String telefone;
+	private String cnpj;
+	private int estoque_maximo;
+	private Date data_criacao;
+	private Date data_modificado;
+	
+
+	
+
+}

@@ -1,0 +1,5 @@
+package model;
+
+public class ordem_de_servico {
+
+}

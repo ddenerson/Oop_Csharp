@@ -1,0 +1,90 @@
+package model;
+
+import java.util.Date;
+
+public class Entrada_de_produto {
+
+	private int id;
+	private Produto produto;
+	private int quantidade;
+	private int valor_unitario;
+	private Fornecedor fornecedor;
+	private Date data_criacao;
+	private Date data_modificacao;
+	
+	public Entrada_de_produto()
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Entrada_de_produto(int id, Produto produto, int quantidade, int valor_unitario, Fornecedor fornecedor,
+			Date data_criacao, Date data_modificacao) {
+		super();
+		this.id = id;
+		this.produto = produto;
+		this.quantidade = quantidade;
+		this.valor_unitario = valor_unitario;
+		this.fornecedor = fornecedor;
+		this.data_criacao = data_criacao;
+		this.data_modificacao = data_modificacao;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
+
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	public int getValor_unitario() {
+		return valor_unitario;
+	}
+
+	public void setValor_unitario(int valor_unitario) {
+		this.valor_unitario = valor_unitario;
+	}
+
+	public Fornecedor getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
+	}
+
+	public Date getData_criacao() {
+		return data_criacao;
+	}
+
+	public void setData_criacao(Date data_criacao) {
+		this.data_criacao = data_criacao;
+	}
+
+	public Date getData_modificacao() {
+		return data_modificacao;
+	}
+
+	public void setData_modificacao(Date data_modificacao) {
+		this.data_modificacao = data_modificacao;
+	}
+	
+	
+}

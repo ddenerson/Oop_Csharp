@@ -1,0 +1,17 @@
+package model;
+
+import java.sql.Date;
+
+public class ordem_de_servico {
+	
+	private int id;
+	private String descricao;
+	private String estado;
+	private Cliente cliente;
+	private double valor;
+	private String mecanico;
+	private Date data_criacao;
+	private Date data_modificacao;
+	
+
+}
