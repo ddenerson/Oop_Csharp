@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Produto {
@@ -9,8 +10,8 @@ public class Produto {
 	private String descricao;
 	private int estoqueMinimo;
 	private int estoqueMaximo;
-	private Date dataCriacao;
-	private Date dataModificacao;
+	private LocalDate dataCriacao;
+	private LocalDate dataModificacao;
 	
 	public Produto()
 	{
@@ -18,16 +19,16 @@ public class Produto {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Produto(int id, String status, String descricao, int estoque_minimo, int estoque_maximo, Date data_criacao,
-			Date data_modificacao) {
+	public Produto(int id, String status, String descricao, int estoque_minimo, int estoque_maximo, LocalDate dataCriacao,
+			LocalDate dataModificacao) {
 		super();
 		this.id = id;
 		this.status = status;
 		this.descricao = descricao;
 		this.estoqueMinimo = estoque_minimo;
 		this.estoqueMaximo = estoque_maximo;
-		this.dataCriacao = data_criacao;
-		this.dataModificacao = data_modificacao;
+		this.dataCriacao = dataCriacao;
+		this.dataModificacao = dataModificacao;
 	}
 
 	public int getId() {
@@ -70,20 +71,27 @@ public class Produto {
 		this.estoqueMaximo = estoque_maximo;
 	}
 
-	public Date getData_criacao() {
+	public LocalDate getData_criacao() {
 		return dataCriacao;
 	}
 
-	public void setData_criacao(Date data_criacao) {
+	public void setData_criacao(LocalDate data_criacao) {
 		this.dataCriacao = data_criacao;
 	}
 
-	public Date getData_modificacao() {
+	public LocalDate getData_modificacao() {
 		return dataModificacao;
 	}
 
-	public void setData_modificacao(Date data_modificacao) {
+	public void setData_modificacao(LocalDate data_modificacao) {
 		this.dataModificacao = data_modificacao;
+	}
+
+	@Override
+	public String toString() {
+		return "Produto[id=" + id + ", status=" + status + ", descricao=" + descricao + ", estoqueMinimo="
+				+ estoqueMinimo + ", estoqueMaximo=" + estoqueMaximo + ", dataCriacao=" + dataCriacao
+				+ ", dataModificacao=" + dataModificacao + "]\n";
 	}
 	
 }

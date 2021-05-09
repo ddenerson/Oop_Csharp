@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Cliente {
@@ -9,25 +10,24 @@ public class Cliente {
 	private String endereco;
 	private String cpf;
 	private String telefone;
-	private Date dataCriacao;
-	private Date dataModificacao;
+	private LocalDate dataCriacao;
+	private LocalDate dataModificacao;
 	
-	public Cliente()
-	{
+	public Cliente() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cliente(int id, String nome, String endereco, String cpf, String telefone, Date data_criacao,
-			Date data_modificacao) {
+	public Cliente(int id, String nome, String endereco, String cpf, String telefone, LocalDate dataCriacao,
+			LocalDate dataModificacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.endereco = endereco;
 		this.cpf = cpf;
 		this.telefone = telefone;
-		this.dataCriacao = data_criacao;
-		this.dataModificacao = data_modificacao;
+		this.dataCriacao = dataCriacao;
+		this.dataModificacao = dataModificacao;
 	}
 
 	public int getId() {
@@ -70,20 +70,32 @@ public class Cliente {
 		this.telefone = telefone;
 	}
 
-	public Date getData_criacao() {
+	public LocalDate getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setData_criacao(Date data_criacao) {
-		this.dataCriacao = data_criacao;
+	public void setDataCriacao(LocalDate dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
 
-	public Date getData_modificacao() {
+	public LocalDate getDataModificacao() {
 		return dataModificacao;
 	}
 
-	public void setData_modificacao(Date data_modificacao) {
-		this.dataModificacao = data_modificacao;
+	public void setDataModificacao(LocalDate dataModificacao) {
+		this.dataModificacao = dataModificacao;
 	}
+
+	@Override
+	public String toString() {
+		return "Cliente [id=" + id + ", nome=" + nome + ", endereco=" + endereco + ", cpf=" + cpf + ", telefone="
+				+ telefone + ", dataCriacao=" + dataCriacao + ", dataModificacao=" + dataModificacao + "]";
+	}
+	
+	
+	
+	
+	
+	
 	
 }

@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Fornecedor
@@ -9,27 +10,28 @@ public class Fornecedor
 	private String telefone;
 	private String cnpj;
 	private int estoqueMaximo;
-	private Date dataCriacao;
-	private Date dataModificado;
+	private LocalDate dataCriacao;
+	private LocalDate dataModificado;
 	
-	
-	public Fornecedor()
-	{
+	public Fornecedor() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Fornecedor(int id, String nome, String telefone, String cnpj, int estoque_maximo, Date data_criacao,
-			Date data_modificado) {
+
+	public Fornecedor(int id, String nome, String telefone, String cnpj, int estoqueMaximo, LocalDate dataCriacao,
+			LocalDate dataModificado) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.telefone = telefone;
 		this.cnpj = cnpj;
-		this.estoqueMaximo = estoque_maximo;
-		this.dataCriacao = data_criacao;
-		this.dataModificado = data_modificado;
+		this.estoqueMaximo = estoqueMaximo;
+		this.dataCriacao = dataCriacao;
+		this.dataModificado = dataModificado;
 	}
+	
+	
+	
 
 	public int getId() {
 		return id;
@@ -63,28 +65,39 @@ public class Fornecedor
 		this.cnpj = cnpj;
 	}
 
-	public int getEstoque_maximo() {
+	public int getEstoqueMaximo() {
 		return estoqueMaximo;
 	}
 
-	public void setEstoque_maximo(int estoque_maximo) {
-		this.estoqueMaximo = estoque_maximo;
+	public void setEstoqueMaximo(int estoqueMaximo) {
+		this.estoqueMaximo = estoqueMaximo;
 	}
 
-	public Date getData_criacao() {
+	public LocalDate getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setData_criacao(Date data_criacao) {
-		this.dataCriacao = data_criacao;
+	public void setDataCriacao(LocalDate dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
 
-	public Date getData_modificado() {
+	public LocalDate getDataModificado() {
 		return dataModificado;
 	}
 
-	public void setData_modificado(Date data_modificado) {
-		this.dataModificado = data_modificado;
+	public void setDataModificado(LocalDate dataModificado) {
+		this.dataModificado = dataModificado;
 	}
+
+	@Override
+	public String toString() {
+		return "Fornecedor [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", cnpj=" + cnpj
+				+ ", estoqueMaximo=" + estoqueMaximo + ", dataCriacao=" + dataCriacao + ", dataModificado="
+				+ dataModificado + "]";
+	}
+	
+	
+	
+	
 		
 }

@@ -1,0 +1,58 @@
+package model;
+
+import java.time.LocalDate;
+
+public class ProdutoDAO
+{
+	
+	Produto[] produto = new Produto[50];
+	int contador;
+	
+	ProdutoDAO() {
+		
+	   Produto p1 = new Produto(1,"ATIVO","TELEFONE CELULAR",10,100,LocalDate.now(),LocalDate.now());
+	   Produto p2 = new Produto(2,"INATIVO","IPHONE",5,50,LocalDate.now(),LocalDate.now());
+	}
+	
+	//Encontra uma posição está vazia
+    public int verificaPosicao(){
+        
+        for ( int i = 0; i < produto.length; i++){
+            if( produto[i] == null){
+                return i;
+            }
+            contador++;
+        }
+        
+        return -1;
+    }
+    
+    
+  //Insere um novo Produto.Se existe um espaço vazio entre 2 produtos,
+  // Então o novo produto será criado nessa posição
+    
+public boolean insereCliente(Produto novoProduto){
+        
+        int posicao = verificaPosicao();
+        if( posicao == -1){
+             return false;
+        }
+        this.produto[posicao] = novoProduto;
+        return true;
+  
+}
+    
+//Encontra a posição do produto
+public int encontraProduto(Produto produtoASerExcluido){
+    for( int i = 0; clientes.length > i; i++){
+        if(clientes[i] != null && clientes[i].equals(clienteASerExcluido)){
+            return i;
+        }
+    }
+    return -1;
+}    
+    
+    
+	
+
+}

@@ -1,0 +1,34 @@
+package model;
+
+import java.time.LocalDate;
+
+public class ProdutoDAO
+{
+	
+	Produto[] produto = new Produto[50];
+	int contador;
+	
+	ProdutoDAO() {
+		
+	   Produto p1 = new Produto(1,"ATIVO","TELEFONE CELULAR",10,100,LocalDate.now(),LocalDate.now());
+	   Produto p2 = new Produto(2,"INATIVO","IPHONE",5,50,LocalDate.now(),LocalDate.now());
+	}
+	
+	//Encontra uma posição está vazia
+    public int verificaPosicao(){
+        
+        for ( int i = 0; i < produto.length; i++){
+            if( produtos[i] == null){
+                return i;
+            }
+            contador++;
+        }
+        
+        return -1;
+    }
+    
+    
+    
+	
+
+}

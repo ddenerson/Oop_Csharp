@@ -1,0 +1,98 @@
+package model;
+
+import java.time.LocalDate;
+
+public class UsuarioDAO {
+	
+	Usuario[] usuarios = new Usuario[50];
+	int contador;
+	
+	public UsuarioDAO() {
+		
+		Usuario u1 = new Usuario(1,"Denerson","AV DEZ","10543213617","34984137603","ddenerson","123456",LocalDate.now(), LocalDate.now());
+		Usuario u2 = new Usuario(2,"Alexssandra","AV DEZ","1054321385","34984137602","ddenerson","1234567",LocalDate.now(), LocalDate.now());
+		
+	}
+	
+	
+	// Encontra uma posição está vazia
+	
+	public int verificaPosicao() {
+
+		for (int i = 0; i < usuarios.length; i++) {
+			if (usuarios[i] == null) {
+				return i;
+			}
+			contador++;
+		}
+
+		return -1;
+	}
+
+	// Insere um novo Produto.Se existe um espaço vazio entre 2 produtos,
+		// Então o novo produto será criado nessa posição
+
+		public boolean insereProduto(Usuario novoUsuarios) {
+
+			int posicao = verificaPosicao();
+			if (posicao == -1) {
+				return false;
+			}
+			this.usuarios[posicao] = novoUsuarios;
+			return true;
+
+		}
+		
+		
+		//Encontra a posição do produto
+
+		public int encontrarUsuario(Usuario usuarioASerExcluido) {
+			for (int i = 0; usuarios.length > i; i++) {
+				if (usuarios[i] != null && usuarios[i].equals(usuarioASerExcluido)) {
+					return i;
+				}
+			}
+			return -1;
+		}
+		
+		//Recebe um produto como parâmetro e "exclui" - null
+
+		public boolean deletaUsuario(Usuario usuarioASerExcluido) {
+			int posicaoUsuario = encontrarUsuario(usuarioASerExcluido);
+
+			if (posicaoUsuario == -1 || posicaoUsuario == 0) {
+				return false;
+			}
+
+			usuarios[posicaoUsuario] = null;
+			return true;
+		}
+		
+		
+		public String listarUsario(Usuario c) {
+			if (encontrarUsuario(c) != -1) {
+				return usuarios[encontrarUsuario(c)].toString();
+			}
+			return "Não encontrado.";
+		}
+		
+		
+		//Funcional
+		
+		public String listarTodosUsuarios() {
+
+			String listaUsuarios = "-- Usuarios -- " + "\n";
+
+			for (int i = 0; usuarios.length > i; i++) {
+				if (usuarios[i] != null) {
+					listaUsuarios += usuarios[i].toString();
+				}
+			}
+			if (listaUsuarios.contentEquals("-- Usuarios -- " + "\n")) {
+				listaUsuarios = "Nenhum produto usuarios.";
+			}
+
+			return listaUsuarios;
+		}
+
+}

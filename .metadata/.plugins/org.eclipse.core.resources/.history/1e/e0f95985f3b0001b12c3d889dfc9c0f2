@@ -1,0 +1,28 @@
+package model;
+
+import java.time.LocalDate;
+
+public class FornecedorDAO {
+	
+	
+	Fornecedor[] fornecedor = new Fornecedor[50];
+	int contador;
+		
+	public FornecedorDAO()
+	{
+		Fornecedor fr1 = new Fornecedor(1,"Luiz","3433141622","01585368525",10,LocalDate.now(),LocalDate.now());
+	}
+		
+	public int verificaPosicao() {
+
+		for (int i = 0; i < fornecedor.length; i++) {
+			if (fornecedor[i] == null) {
+				return i;
+			}
+			contador++;
+		}
+
+		return -1;
+	}
+
+}

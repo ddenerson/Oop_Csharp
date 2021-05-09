@@ -1,0 +1,17 @@
+package model;
+
+import java.time.LocalDate;
+
+public class ProdutoDAO
+{
+	
+	Produto[] produto = new Produto[50];
+	int contador;
+	
+	ProdutoDAO() {
+		
+	   Produto p1 = new Produto(1,"PROCESSANDO","TELEFONE CELULAR",10,100,LocalDate.now(),LocalDate.now());
+	}
+	
+
+}

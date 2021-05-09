@@ -1,0 +1,92 @@
+package model;
+
+import java.time.LocalDate;
+
+public class ProdutoDAO {
+
+	Produto[] produtos = new Produto[50];
+	int contador;
+
+	public ProdutoDAO() {
+
+		Produto p1 = new Produto(1, "ATIVO", "TELEFONE CELULAR", 10, 100, LocalDate.now(), LocalDate.now());
+		Produto p2 = new Produto(2, "INATIVO", "IPHONE", 5, 50, LocalDate.now(), LocalDate.now());
+	}
+
+	// Encontra uma posição está vazia
+
+	public int verificaPosicao() {
+
+		for (int i = 0; i < produtos.length; i++) {
+			if (produtos[i] == null) {
+				return i;
+			}
+			contador++;
+		}
+
+		return -1;
+	}
+
+	// Insere um novo Produto.Se existe um espaço vazio entre 2 produtos,
+	// Então o novo produto será criado nessa posição
+
+	public boolean insereProduto(Produto novoProduto) {
+
+		int posicao = verificaPosicao();
+		if (posicao == -1) {
+			return false;
+		}
+		this.produtos[posicao] = novoProduto;
+		return true;
+
+	}
+
+//Encontra a posição do produto
+
+	public int encontraProduto(Produto produtoASerExcluido) {
+		for (int i = 0; produtos.length > i; i++) {
+			if (produtos[i] != null && produtos[i].equals(produtoASerExcluido)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+//Recebe um produto como parâmetro e "exclui" - null
+
+	public boolean deletaProduto(Produto produtoASerExcluido) {
+		int posicaoProduto = encontraProduto(produtoASerExcluido);
+
+		if (posicaoProduto == -1 || posicaoProduto == 0) {
+			return false;
+		}
+
+		produtos[posicaoProduto] = null;
+		return true;
+	}
+
+	public String listarProduto(Produto c) {
+		if (encontraProduto(c) != -1) {
+			return produtos[encontraProduto(c)].toString();
+		}
+		return "Não encontrado.";
+	}
+
+//Funcional
+	public String listarTodosProdutos() {
+
+		String listaProduto = "-- Produto -- " + "\n";
+
+		for (int i = 0; produtos.length > i; i++) {
+			if (produtos[i] != null) {
+				listaProduto += produtos[i].toString();
+			}
+		}
+		if (listaProduto.contentEquals("-- Produto -- " + "\n")) {
+			listaProduto = "Nenhum produto cadastrado.";
+		}
+
+		return listaProduto;
+	}
+
+}

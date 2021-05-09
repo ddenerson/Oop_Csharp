@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Usuario {
@@ -11,10 +12,10 @@ public class Usuario {
 	private String telefone;
 	private String login;
 	private String senha;
-	private Date dataCriacao;
-	private Date dataModificacao;
+	private LocalDate dataCriacao;
+	private LocalDate dataModificacao;
 	
-	public Usuario()
+	public Usuario(int i, String string, String string2, String string3, String string4, String string5, String string6, LocalDate dataCriacao, LocalDate dataModificacao)
 	{
 		super();
 		// TODO Auto-generated constructor stub
@@ -29,8 +30,8 @@ public class Usuario {
 		this.telefone = telefone;
 		this.login = login;
 		this.senha = senha;
-		this.dataCriacao = data_criacao;
-		this.dataModificacao = data_modificacao;
+		this.dataCriacao = dataCriacao;
+		this.dataModificacao = dataModificacao;
 	}
 	public int getId() {
 		return id;
@@ -74,17 +75,17 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public Date getData_criacao() {
+	public LocalDate getDataCriacao() {
 		return dataCriacao;
 	}
-	public void setData_criacao(Date data_criacao) {
-		this.dataCriacao = data_criacao;
+	public void setDataCriacao(LocalDate dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
-	public Date getData_modificacao() {
+	public LocalDate getDataModificacao() {
 		return dataModificacao;
 	}
-	public void setData_modificacao(Date data_modificacao) {
-		this.dataModificacao = data_modificacao;
+	public void setDataModificacao(LocalDate dataModificacao) {
+		this.dataModificacao = dataModificacao;
 	}
 	
 }
