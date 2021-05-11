@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class OrdemServico {
 	
@@ -10,19 +10,21 @@ public class OrdemServico {
 	private Cliente cliente;
 	private double valor;
 	private String mecanico;
-	private Date dataCriacao;
-	private Date dataModificacao;
+	private LocalDate dataCriacao;
+	private LocalDate dataModificacao;
 	
 	
 	
-	public OrdemServico()
+	public OrdemServico(int id)
 	{
 		super();
 		// TODO Auto-generated constructor stub
+		this.id = id;
 	}
+	
 
 	public OrdemServico(int id, String descricao, String estado, Cliente cliente, double valor, String mecanico,
-			Date data_criacao, Date data_modificacao) {
+			LocalDate data_criacao, LocalDate data_modificacao) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -82,21 +84,30 @@ public class OrdemServico {
 		this.mecanico = mecanico;
 	}
 
-	public Date getData_criacao() {
+	public LocalDate getData_criacao() {
 		return dataCriacao;
 	}
 
-	public void setData_criacao(Date data_criacao) {
+	public void setData_criacao(LocalDate data_criacao) {
 		this.dataCriacao = data_criacao;
 	}
 
-	public Date getData_modificacao() {
+	public LocalDate getData_modificacao() {
 		return dataModificacao;
 	}
 
-	public void setData_modificacao(Date data_modificacao) {
+	public void setData_modificacao(LocalDate data_modificacao) {
 		this.dataModificacao = data_modificacao;
 	}
+
+	@Override
+	public String toString() {
+		return "OrdemServico [id=" + id + ", descricao=" + descricao + ", estado=" + estado + ", cliente=" + cliente
+				+ ", valor=" + valor + ", mecanico=" + mecanico + ", dataCriacao=" + dataCriacao + ", dataModificacao="
+				+ dataModificacao + "] \n";
+	}
+	
+	
 	
 	
 
