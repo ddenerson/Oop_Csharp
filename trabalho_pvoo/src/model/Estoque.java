@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Estoque {
@@ -8,24 +9,25 @@ public class Estoque {
 	private Produto produto;
 	private int quantidade;
 	private double valor_unitario;
-	private Date dataCriacao;
-	private Date dataModificado;
+	private LocalDate dataCriacao;
+	private LocalDate dataModificado;
 	
 	
-	public Estoque() {
+	public Estoque(int id) {
 		super();
 		// TODO Auto-generated constructor stub
+		this.id = id;
 	}
 
-	public Estoque(int id, Produto produto, int quantidade, double valor_unitario, Date data_criacao,
-			Date data_modificado) {
+	public Estoque(int id, Produto produto, int quantidade, double valor_unitario, LocalDate dataCriação,
+			LocalDate dataModificado) {
 		super();
 		this.id = id;
 		this.produto = produto;
 		this.quantidade = quantidade;
 		this.valor_unitario = valor_unitario;
-		this.dataCriacao = data_criacao;
-		this.dataModificado = data_modificado;
+		this.dataCriacao = dataCriação;
+		this.dataModificado = dataModificado;
 	}
 
 	public int getId() {
@@ -60,19 +62,19 @@ public class Estoque {
 		this.valor_unitario = valor_unitario;
 	}
 
-	public Date getData_criacao() {
+	public LocalDate getData_criacao() {
 		return dataCriacao;
 	}
 
-	public void setData_criacao(Date data_criacao) {
+	public void setData_criacao(LocalDate data_criacao) {
 		this.dataCriacao = data_criacao;
 	}
 
-	public Date getData_modificado() {
+	public LocalDate getData_modificado() {
 		return dataModificado;
 	}
 
-	public void setData_modificado(Date data_modificado) {
+	public void setData_modificado(LocalDate data_modificado) {
 		this.dataModificado = data_modificado;
 	}
 	
