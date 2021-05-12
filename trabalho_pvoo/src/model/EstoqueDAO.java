@@ -38,7 +38,7 @@ public class EstoqueDAO {
 		return true;
 	}
 	
-	// Encontra a posição da ordem de serviços
+	// Encontra a posição do estoque
 	public int encontrarOrdemEstoque(Estoque ordemEstoque) {
 		for (int i = 0; estoque.length > i; i++) {
 			if (estoque[i] != null && estoque[i].equals(ordemEstoque)) {
@@ -60,7 +60,6 @@ public class EstoqueDAO {
 			return null;
 	}
 	
-	// Recebe um cliente como parâmetro e "exclui" - null
 	public boolean deletaEstoque(Estoque estoqueASerExcluido) {
 		   int posicaoOrdem = encontrarOrdemEstoque(estoqueASerExcluido);
 

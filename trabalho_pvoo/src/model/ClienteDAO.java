@@ -89,6 +89,29 @@ public class ClienteDAO {
 		
 		return null;
 	}
+	
+	// Recebe um objeto do tipo cliente contendo o id e as informações que serão atualizadas
+	public boolean atualizaCliente(Cliente c) {
+		// É realizada a busca pelo cliente que será atualizado
+		Cliente clienteBusca = this.buscaCliente(c.getId());
+		// É verificado quais informações foram preenchidas para atualizar
+		if (c.getNome() != null) {
+			clienteBusca.setNome(c.getNome());
+		}
+		if (c.getEndereco() != null) {
+			clienteBusca.setEndereco(c.getEndereco());
+		}
+		if (c.getCpf() != null) {
+			clienteBusca.setCpf(c.getCpf());
+		}
+		if (c.getTelefone() != null) {
+			clienteBusca.setTelefone(c.getTelefone());
+		}
+		// atualiza a data de modificação para o momento em que é atualizada
+		clienteBusca.setDataModificacao(LocalDate.now());
+
+		return true;
+	}
 
 	// Recebe um cliente como parâmetro e "exclui" - null
 	public boolean deletaCliente(Cliente clienteASerExcluido) {
@@ -126,8 +149,7 @@ public class ClienteDAO {
 
 		return listaClientes;
 	}
-	
-	
+
 	public Cliente[] getClientes() {
 		return clientes;
 	}

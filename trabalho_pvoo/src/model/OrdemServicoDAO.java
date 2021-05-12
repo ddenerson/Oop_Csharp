@@ -8,10 +8,7 @@ public class OrdemServicoDAO {
 	private OrdemServico[] ordens = new OrdemServico[40];
 	int contador;
 	
-	public OrdemServicoDAO(Cliente[] clientes) {	
-		
-//		Cliente cl1 = new Cliente(1,"Denerson","ANTONIO ALVES","10543213617","34984137603",LocalDate.now(),LocalDate.now());
-//		Cliente cl2 = new Cliente(2,"Alex","ANTONIO ALVES DUTRA","105432136","984137603",LocalDate.now(),LocalDate.now());
+	public OrdemServicoDAO(Cliente[] clientes) {
 		
 		OrdemServico ordem1 = new OrdemServico(1, "Instalação de módulo de memória", "Processando",clientes[0],100,"Carlão",LocalDate.now(), LocalDate.now());
 		OrdemServico ordem2 = new OrdemServico(2, "Limpeza", "Processando",clientes[1],100,"Carlão",LocalDate.now(), LocalDate.now());
@@ -63,20 +60,20 @@ public class OrdemServicoDAO {
 			return true;
 		}
 		
-		// Encontra a posição da ordem de serviços
-		public int encontrarOrdemServico(OrdemServico ordemServico) {
+		// Encontra a posição da ordem de servico
+		public int encontrarOrdem(OrdemServico ordem) {
 			for (int i = 0; ordens.length > i; i++) {
-				if (ordens[i] != null && ordens[i].equals(ordemServico)) {
+				if (ordens[i] != null && ordens[i].equals(ordem)) {
 					return i;
 				}
 			}
 			return -1;
 		}
 		
-		// Busca cliente
-		public OrdemServico buscaOrdemServico(int id) {
-			OrdemServico OrdemServicoBusca = new OrdemServico(id);
-			int pos = encontrarOrdemServico(OrdemServicoBusca);
+		// Método que busca usando o id e retorna a ordem de servico
+		public OrdemServico buscaOrdem(int id) {
+			OrdemServico ordem = new OrdemServico(id);
+			int pos = encontrarOrdem(ordem);
 			
 			if (pos != -1) {
 				return this.ordens[pos];
@@ -84,20 +81,35 @@ public class OrdemServicoDAO {
 			
 			return null;
 		}
-
-		// Recebe um cliente como parâmetro e "exclui" - null
-		public boolean deletaOrdemServico(OrdemServico ordemASerExcluido) {
-			int posicaoOrdem = encontrarOrdemServico(ordemASerExcluido);
-
-			if (posicaoOrdem == -1 || posicaoOrdem == 0) {
-				return false;
+		
+		// Método que recebe um objeto que contém o id e as informações que devem ser atualizadas
+		public boolean atualizarOrdem(OrdemServico ordemServico) {
+			
+			// É realizada a busca pela ordem de servico que será atualizado
+			OrdemServico ordem = this.buscaOrdem(ordemServico.getId());
+			
+			// É verificado quais informações foram preenchidas para atualizar
+			if (ordemServico.getDescricao() != null) {
+				ordem.setDescricao(ordemServico.getDescricao());
 			}
-
-			ordens[posicaoOrdem] = null;
+			if (ordemServico.getEstado() != null) {
+				ordem.setEstado(ordemServico.getEstado());
+			}
+			// TODO: Implementar busca por cliente para que ele possa ser inserido na ordem de servico
+			if (ordemServico.getCliente() != null) {
+				ordem.setCliente(ordemServico.getCliente());
+			}
+			if (ordemServico.getValor() != 0.0d) {
+				ordem.setValor(ordemServico.getValor());
+			}
+			if (ordemServico.getMecanico() != null) {
+				ordem.setMecanico(ordemServico.getMecanico());
+			}
+			// atualiza a data de modificação para o momento em que o objeto é atualizado
+			ordem.setData_modificacao(LocalDate.now());
+			
 			return true;
 		}
-
-		
 		
 		// Lista todas as ordens de servico
 		public String listarTodasOrdens() {

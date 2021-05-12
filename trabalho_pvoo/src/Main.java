@@ -81,17 +81,8 @@ public class Main {
 				break;
 			case 4:
 				System.out.println("-- ATUALIZAR CLIENTE -- \n");
-				
-				// Recebe o id do cliente que será buscado
 				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
-				// Cria um objeto do tipo Cliente com o id recebido anteriormente
-				clientePesquisado = new Cliente(id);
-				// Realiza a pesquisa usando o objeto criado anteriormente
-				clienteString = clienteDAO.listarCliente(clientePesquisado);
-				// Se o cliente existir os dados são mostrados
-				System.out.println(clienteString);
-				
-				
+				menuAtualizarCliente(id);
 				break;
 			case 5:
 				System.out.println("-- REMOVER CLIENTE -- \n");
@@ -160,16 +151,14 @@ public class Main {
 				}
 				break;
 			case 2:
-				System.out.println("-- CONSULTAR CLIENTE -- \n");
+				System.out.println("-- CONSULTAR ORDEM DE SERVIÇO -- \n");
 
-				// Recebe o id do cliente que será buscado
-				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
-				// Cria um objeto do tipo Cliente com o id recebido anteriormente
-				Cliente clientePesquisado = new Cliente(id);
+				// Recebe o id da ordem de servico que será buscada
+				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id da ordem de serviço: "));
 				// Realiza a pesquisa usando o objeto criado anteriormente
-				String clienteString = clienteDAO.listarCliente(clientePesquisado);
+				OrdemServico osEncontrada = ordemServicoDAO.buscaOrdem(id);
 				// Se o cliente existir os dados são mostrados
-				System.out.println(clienteString);
+				System.out.println(osEncontrada);
 				
 				break;
 			case 3:
@@ -177,13 +166,14 @@ public class Main {
 				String listaOS = ordemServicoDAO.listarTodasOrdens();
 				System.out.println(listaOS);
 				break;
-//			case 4:
-//				System.out.println("-- ATUALIZAR ORDEM DE SERVIÇO -- \n");
-//				
-//				break;
-			case 5:
-				System.out.println("-- REMOVER ORDEM DE SERVICO -- \n");
-				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id da ordem de serviço: "));
+			case 4:
+				System.out.println("-- ATUALIZAR ORDEM DE SERVICO -- \n");
+				int idOS = Integer.parseInt(JOptionPane.showInputDialog("Digite o id da ordem de serviço: "));
+				menuAtualizarOrdemServico(idOS);
+				break;
+//			case 5:
+//				System.out.println("-- REMOVER CLIENTE -- \n");
+//				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
 //				Cliente clienteDeleta = new Cliente(idDeleta);
 //				boolean resultadoDeleta = clienteDAO.deletaCliente(clienteDeleta);
 //				if (resultadoDeleta) {
@@ -253,6 +243,120 @@ public class Main {
 				break;
 			}
 		} while (opcao != 8);
+	}
+	
+	public void menuAtualizarCliente(int id) {
+		int opcao;
+		Cliente cliente = new Cliente(id);
+		
+		do {
+			// Constroi o menu
+			StringBuilder menu = new StringBuilder("-- ATUALIZAR CLIENTE --").append("\n");
+			menu.append("1. NOME").append("\n");
+			menu.append("2. ENDEREÇO").append("\n");
+			menu.append("3. CPF").append("\n");
+			menu.append("4. TELEFONE").append("\n");
+			menu.append("5. VOLTAR").append("\n");
+			
+			// Exibe o menu no terminal
+			System.out.println(menu);
+
+			// Captura a opção escolhida
+			opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+
+			// Menu que realiza as operações
+			switch (opcao) {
+			// Direciona para os menus
+			case 1:
+				String nome = JOptionPane.showInputDialog("Digite o novo nome: ");
+				cliente.setNome(nome);
+				clienteDAO.atualizaCliente(cliente);
+				break;
+			case 2:
+				String endereco = JOptionPane.showInputDialog("Digite o novo endereço: ");
+				cliente.setEndereco(endereco);
+				clienteDAO.atualizaCliente(cliente);
+				break;
+			case 3:
+				String cpf = JOptionPane.showInputDialog("Digite o novo CPF: ");
+				cliente.setCpf(cpf);
+				clienteDAO.atualizaCliente(cliente);
+				break;
+			case 4:
+				String telefone = JOptionPane.showInputDialog("Digite o novo telefone: ");
+				cliente.setTelefone(telefone);
+				clienteDAO.atualizaCliente(cliente);
+				break;
+			case 5:
+				System.out.println("Retornando a tela de menu...");
+				break;
+			default:
+				System.out.println("Opção inválida!");
+				break;
+			}
+		} while (opcao != 5);
+		
+	}
+	
+	public void menuAtualizarOrdemServico(int id) {
+		int opcao;
+		OrdemServico ordemServico = new OrdemServico(id);
+		
+		do {
+			// Constroi o menu
+			StringBuilder menu = new StringBuilder("-- ATUALIZAR ORDEM SERVICO --").append("\n");
+			menu.append("1. DESCRIÇÃO").append("\n");
+			menu.append("2. ESTADO").append("\n");
+			menu.append("3. CLIENTE").append("\n");
+			menu.append("4. VALOR").append("\n");
+			menu.append("5. MECÂNICO").append("\n");
+			menu.append("6. VOLTAR").append("\n");
+			
+			// Exibe o menu no terminal
+			System.out.println(menu);
+
+			// Captura a opção escolhida
+			opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+
+			// Menu que realiza as operações
+			switch (opcao) {
+			// Direciona para os menus
+			case 1:
+				String descricao = JOptionPane.showInputDialog("Digite a nova descrição: ");
+				ordemServico.setDescricao(descricao);
+
+				break;
+			case 2:
+				String estado = JOptionPane.showInputDialog("Digite o novo estado: ");
+				ordemServico.setEstado(estado);
+
+				break;
+			case 3:
+				String clienteId = JOptionPane.showInputDialog("Digite o id do cliente: ");
+				Cliente cliente = clienteDAO.buscaCliente(id);
+				System.out.println("Cliente encontrado? " + cliente);
+				ordemServico.setCliente(cliente);
+				ordemServicoDAO.atualizarOrdem(ordemServico);
+				break;
+			case 4:
+				double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o novo valor: "));
+				ordemServico.setValor(valor);
+				
+				break;
+			case 5:
+				String mecanico = JOptionPane.showInputDialog("Digite o novo mecânico: ");
+				ordemServico.setMecanico(mecanico);
+				
+				break;
+			case 6:
+				System.out.println("Retornando a tela de menu...");
+				break;
+			default:
+				System.out.println("Opção inválida!");
+				break;
+			}
+		} while (opcao != 6);
+		
 	}
 
 }
