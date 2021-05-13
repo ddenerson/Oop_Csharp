@@ -6,10 +6,13 @@ import model.Cliente;
 import model.ClienteDAO;
 import model.OrdemServico;
 import model.OrdemServicoDAO;
+import model.Usuario;
+import model.UsuarioDAO;
 
 public class Main {
 
 	ClienteDAO clienteDAO = new ClienteDAO();
+	UsuarioDAO usuarioDAO = new UsuarioDAO();
 	OrdemServicoDAO ordemServicoDAO = new OrdemServicoDAO(clienteDAO.getClientes());
 
 	public Main() {
@@ -18,6 +21,94 @@ public class Main {
 
 	public static void main(String[] args) {
 		new Main();
+	}
+
+	public void menuUsuario() {
+		int opcao;
+		
+		do {
+			// Constroi o menu
+			StringBuilder menu = new StringBuilder("-- USUARIO  --").append("\n");
+			menu.append("1. Novo usuario").append("\n");
+			menu.append("2. Consultar usuario").append("\n");
+			menu.append("3. Listar usuario").append("\n");
+			menu.append("4. Atualizar usuario").append("\n");
+			menu.append("5. Remover usuario").append("\n");
+			menu.append("6. Voltar").append("\n");
+			
+			// Exibe o menu no terminal
+			System.out.println(menu);
+			
+			// Captura a opção escolhida
+			opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+			
+			// Menu que realiza as operações
+			switch (opcao) {
+			
+			// Cria um novo cliente e insere no DAO
+			   case 1:
+				   
+					 System.out.println("-- NOVO USUARIO -- \n");
+					 
+					 int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuario: "));
+					 String nome = JOptionPane.showInputDialog("Nome: ");
+					 String endereco = JOptionPane.showInputDialog("Endereço: ");
+					 String cpf = JOptionPane.showInputDialog("CPF: ");
+					 String telefone = JOptionPane.showInputDialog("Telefone: ");
+					 // FALTANDO LOGIN
+					 // FALTANDO SENHA
+					 LocalDate dataCriacao = LocalDate.now();
+					 LocalDate dataModificacao = LocalDate.now();
+					 
+					 Usuario novoUsario = new Usuario(id, nome, endereco, cpf, telefone,login,senha,dataCriacao, dataModificacao);
+					 boolean resultado = usuarioDAO.insereUsuario(novoUsario);
+					 
+					 if (resultado){
+							System.out.println("Usuario cadastrado com sucesso!");
+				     }else{
+							System.out.println("Não foi possível cadastrar o usuario!");
+					 }
+					 break;
+			   case 2:
+				   
+					System.out.println("-- CONSULTAR USUARIO -- \n");
+					int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
+				    Usuario usuarioPesquisado = new Usuario(id);
+					String usuarioString = usuarioDAO.listarUsario(usuarioPesquisado);
+					
+					// Se o cliente existir os dados são mostrados
+					System.out.println(usuarioString);
+				   break;
+			   case 3:
+				   System.out.println("-- USUARIOS CADASTRADOS -- \n");
+				   String listaUsuarios = usuarioDAO.listarTodosUsuarios();
+				   System.out.println(usuarioDAO);
+				   break;
+			   case 4:
+					System.out.println("-- ATUALIZAR USUARIOS -- \n");
+					id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuarios: "));
+					menuAtualizarUsuario(id);
+					break;
+			   case 5:
+					System.out.println("-- REMOVER USUARIOS -- \n");
+					int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuarios: "));
+					Usuario usuarioDeleta = new Usuario(idDeleta);
+					boolean resultadoDeleta = usuarioDAO.deletaUsuario(usuarioDeleta);
+					  if (resultadoDeleta) {
+						    System.out.println("Usuario deletado com sucesso!");
+					  }else {
+							System.out.println("Não foi possível deletar o usuario!");
+					  }
+					break;
+			   case 6:
+					System.out.println("Retorna ao menu principal");
+					break;
+			   default:
+					System.out.println("Opção inválida!");
+					break;
+			
+			}
+	   }while (opcao != 6);
 	}
 
 	public void menuCliente() {
@@ -72,7 +163,7 @@ public class Main {
 				String clienteString = clienteDAO.listarCliente(clientePesquisado);
 				// Se o cliente existir os dados são mostrados
 				System.out.println(clienteString);
-				
+
 				break;
 			case 3:
 				System.out.println("-- CLIENTES CADASTRADOS -- \n");
@@ -91,7 +182,7 @@ public class Main {
 				boolean resultadoDeleta = clienteDAO.deletaCliente(clienteDeleta);
 				if (resultadoDeleta) {
 					System.out.println("Cliente deletado com sucesso!");
-				}else {
+				} else {
 					System.out.println("Não foi possível deletar o cliente!");
 				}
 				break;
@@ -104,7 +195,7 @@ public class Main {
 			}
 		} while (opcao != 6);
 	}
-	
+
 	public void menuOrdemServico() {
 		int opcao;
 
@@ -128,8 +219,8 @@ public class Main {
 			switch (opcao) {
 			// Cria uma nova ordem de servico e insere no DAO
 			case 1:
-				System.out.println("-- NOVA ORDEM DE SERVIÇO -- \n");		
-				
+				System.out.println("-- NOVA ORDEM DE SERVIÇO -- \n");
+
 				String descricao = JOptionPane.showInputDialog("Descrição: ");
 				String estado = JOptionPane.showInputDialog("Estado: ");
 				int clienteId = Integer.parseInt(JOptionPane.showInputDialog("Número do cliente: "));
@@ -139,8 +230,9 @@ public class Main {
 				LocalDate dataCriacaoOS = LocalDate.now();
 				LocalDate dataModificacaoOS = LocalDate.now();
 
-				OrdemServico novaOrdem = new OrdemServico(0, descricao, estado, cliente, valor, mecanico, dataCriacaoOS, dataModificacaoOS);
-				
+				OrdemServico novaOrdem = new OrdemServico(0, descricao, estado, cliente, valor, mecanico, dataCriacaoOS,
+						dataModificacaoOS);
+
 				// Usa o DAO para salvar
 				boolean resultado = ordemServicoDAO.insereOrdem(novaOrdem);
 
@@ -159,7 +251,7 @@ public class Main {
 				OrdemServico osEncontrada = ordemServicoDAO.buscaOrdem(id);
 				// Se o cliente existir os dados são mostrados
 				System.out.println(osEncontrada);
-				
+
 				break;
 			case 3:
 				System.out.println("-- LISTA ORDENS DE SERVICO -- \n");
@@ -189,9 +281,94 @@ public class Main {
 				System.out.println("Opção inválida!");
 				break;
 			}
-		} while (opcao != 6);
+		} while(opcao != 6);
 	}
 	
+	public void menuFornecedor() {
+	   int opcao;
+		
+		do {
+			// Constroi o menu
+			StringBuilder menu = new StringBuilder("-- FORNECEDOR  --").append("\n");
+			menu.append("1. Novo Fornecedor").append("\n");
+			menu.append("2. Consultar Fornecedor").append("\n");
+			menu.append("3. Listar Fornecedor").append("\n");
+			menu.append("4. Atualizar Fornecedor").append("\n");
+			menu.append("5. Remover Fornecedor").append("\n");
+			menu.append("6. Voltar").append("\n");
+			
+			// Exibe o menu no terminal
+			   System.out.println(menu);
+
+			// Captura a opção escolhida
+			   opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+			   
+			   switch (opcao) {
+			   
+			   }
+
+			
+		} while(opcao != 6);
+		
+	}
+	
+	public void menuProduto() {
+		   int opcao;
+			
+			do {
+				// Constroi o menu
+				StringBuilder menu = new StringBuilder("-- PRODUTO  --").append("\n");
+				menu.append("1. Novo Produto").append("\n");
+				menu.append("2. Consultar Produto").append("\n");
+				menu.append("3. Listar Produto").append("\n");
+				menu.append("4. Atualizar Produto").append("\n");
+				menu.append("5. Remover Produto").append("\n");
+				menu.append("6. Voltar").append("\n");
+				
+				// Exibe o menu no terminal
+				   System.out.println(menu);
+
+				// Captura a opção escolhida
+				   opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+				   
+				   switch (opcao) {
+				   
+				   }
+
+				
+			} while(opcao != 6);
+			
+		}
+	
+	public void menuEstoque() {
+		   int opcao;
+			
+			do {
+				// Constroi o menu
+				StringBuilder menu = new StringBuilder("-- ESTOQUE  --").append("\n");
+				menu.append("1. Novo Produto").append("\n");
+				menu.append("2. Consultar Estoque").append("\n");
+				menu.append("3. Listar Estoque").append("\n");
+				menu.append("4. Atualizar Estoque").append("\n");
+				menu.append("5. Remover Estoque").append("\n");
+				menu.append("6. Voltar").append("\n");
+				
+				// Exibe o menu no terminal
+				   System.out.println(menu);
+
+				// Captura a opção escolhida
+				   opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+				   
+				   switch (opcao) {
+				   
+				   }
+
+				
+			} while(opcao != 6);
+			
+		}
+
+
 	public void menuPrincipal() {
 		int opcao;
 
@@ -216,19 +393,19 @@ public class Main {
 			switch (opcao) {
 			// Direciona para os menus
 			case 1:
-				
+
 				break;
 			case 2:
 				menuCliente();
 				break;
 			case 3:
-				
+
 				break;
 			case 4:
-				
+
 				break;
 			case 5:
-				
+
 				break;
 			case 6:
 				break;
@@ -244,11 +421,11 @@ public class Main {
 			}
 		} while (opcao != 8);
 	}
-	
+
 	public void menuAtualizarCliente(int id) {
 		int opcao;
 		Cliente cliente = new Cliente(id);
-		
+
 		do {
 			// Constroi o menu
 			StringBuilder menu = new StringBuilder("-- ATUALIZAR CLIENTE --").append("\n");
@@ -257,7 +434,7 @@ public class Main {
 			menu.append("3. CPF").append("\n");
 			menu.append("4. TELEFONE").append("\n");
 			menu.append("5. VOLTAR").append("\n");
-			
+
 			// Exibe o menu no terminal
 			System.out.println(menu);
 
@@ -295,13 +472,13 @@ public class Main {
 				break;
 			}
 		} while (opcao != 5);
-		
+
 	}
-	
+
 	public void menuAtualizarOrdemServico(int id) {
 		int opcao;
 		OrdemServico ordemServico = new OrdemServico(id);
-		
+
 		do {
 			// Constroi o menu
 			StringBuilder menu = new StringBuilder("-- ATUALIZAR ORDEM SERVICO --").append("\n");
@@ -311,7 +488,7 @@ public class Main {
 			menu.append("4. VALOR").append("\n");
 			menu.append("5. MECÂNICO").append("\n");
 			menu.append("6. VOLTAR").append("\n");
-			
+
 			// Exibe o menu no terminal
 			System.out.println(menu);
 
@@ -341,12 +518,12 @@ public class Main {
 			case 4:
 				double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o novo valor: "));
 				ordemServico.setValor(valor);
-				
+
 				break;
 			case 5:
 				String mecanico = JOptionPane.showInputDialog("Digite o novo mecânico: ");
 				ordemServico.setMecanico(mecanico);
-				
+
 				break;
 			case 6:
 				System.out.println("Retornando a tela de menu...");
@@ -356,7 +533,7 @@ public class Main {
 				break;
 			}
 		} while (opcao != 6);
-		
+
 	}
 
 }
