@@ -15,13 +15,14 @@ public class Usuario {
 	private LocalDate dataCriacao;
 	private LocalDate dataModificacao;
 	
-	public Usuario(int i, String string, String string2, String string3, String string4, String string5, String string6, LocalDate dataCriacao, LocalDate dataModificacao)
+	public Usuario(int id)
 	{
 		super();
 		// TODO Auto-generated constructor stub
+		this.id = id;
 	}
 	public Usuario(int id, String nome, String endereco, String cpf, String telefone, String login, String senha,
-			Date data_criacao, Date data_modificacao) {
+			LocalDate data_criacao, LocalDate data_modificacao) {
 		super();
 		this.id = id;
 		this.nome = nome;

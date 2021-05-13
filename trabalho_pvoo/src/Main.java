@@ -285,6 +285,7 @@ public class Main {
 	}
 	
 	public void menuFornecedor() {
+
 	   int opcao;
 		
 		do {
@@ -340,6 +341,36 @@ public class Main {
 			
 		}
 	
+	public void menuEntradaProduto() {
+
+		   int opcao;
+			
+			do {
+				// Constroi o menu
+				StringBuilder menu = new StringBuilder("-- ENTRADA DE PRODUTO  --").append("\n");
+				menu.append("1. Novo Produto").append("\n");
+				menu.append("2. Consultar Produto").append("\n");
+				menu.append("3. Listar Produto").append("\n");
+				menu.append("4. Atualizar Produto").append("\n");
+				menu.append("5. Remover Produto").append("\n");
+				menu.append("6. Voltar").append("\n");
+				
+				// Exibe o menu no terminal
+				   System.out.println(menu);
+
+				// Captura a opção escolhida
+				   opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+				   
+				   switch (opcao) {
+				   
+				   }
+
+				
+			} while(opcao != 6);
+			
+		
+	}
+	
 	public void menuEstoque() {
 		   int opcao;
 			
@@ -368,6 +399,58 @@ public class Main {
 			
 		}
 
+	public void menuSaidaProduto() {
+		 int opcao;
+			
+			do {
+				// Constroi o menu
+				StringBuilder menu = new StringBuilder("-- SAIDA PRODUTO  --").append("\n");
+				menu.append("1. Novo Produto").append("\n");
+				menu.append("2. Consultar Saida Produto").append("\n");
+				menu.append("3. Listar Saida de Produtos ").append("\n");
+				menu.append("4. Atualizar Saida Produto").append("\n");
+				menu.append("5. Remover Saida Produto").append("\n");
+				menu.append("6. Voltar").append("\n");
+				
+				// Exibe o menu no terminal
+				   System.out.println(menu);
+
+				// Captura a opção escolhida
+				   opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+				   
+				   switch (opcao) {
+				   
+				   }
+
+				
+			} while(opcao != 6);
+	}
+	
+	public void menuNotaFiscal() {
+		
+		do {
+			// Constroi o menu
+			StringBuilder menu = new StringBuilder("-- NOTA FISCAL  --").append("\n");
+			menu.append("1. Nova Nota Fiscal").append("\n");
+			menu.append("2. Consultar Nota Fiscal").append("\n");
+			menu.append("3. Listar Nota Fiscal ").append("\n");
+			menu.append("4. Atualizar Nota Fiscal").append("\n");
+			menu.append("5. Remover Nota Fiscal").append("\n");
+			menu.append("6. Voltar").append("\n");
+			
+			// Exibe o menu no terminal
+			   System.out.println(menu);
+
+			// Captura a opção escolhida
+			   opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+			   
+			   switch (opcao) {
+			   
+			   }
+
+			
+		}while(opcao != 6);
+	}
 
 	public void menuPrincipal() {
 		int opcao;
