@@ -55,8 +55,8 @@ public class Main {
 					 String endereco = JOptionPane.showInputDialog("Endereço: ");
 					 String cpf = JOptionPane.showInputDialog("CPF: ");
 					 String telefone = JOptionPane.showInputDialog("Telefone: ");
-					 // FALTANDO LOGIN
-					 // FALTANDO SENHA
+					 String login = JOptionPane.showInputDialog("Login: ");
+					 String senha = JOptionPane.showInputDialog("Senha: ");
 					 LocalDate dataCriacao = LocalDate.now();
 					 LocalDate dataModificacao = LocalDate.now();
 					 
@@ -72,7 +72,7 @@ public class Main {
 			   case 2:
 				   
 					System.out.println("-- CONSULTAR USUARIO -- \n");
-					int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
+					id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
 				    Usuario usuarioPesquisado = new Usuario(id);
 					String usuarioString = usuarioDAO.listarUsario(usuarioPesquisado);
 					
@@ -87,7 +87,7 @@ public class Main {
 			   case 4:
 					System.out.println("-- ATUALIZAR USUARIOS -- \n");
 					id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuarios: "));
-					menuAtualizarUsuario(id);
+					//menuAtualizarUsuario(id);
 					break;
 			   case 5:
 					System.out.println("-- REMOVER USUARIOS -- \n");
@@ -427,6 +427,7 @@ public class Main {
 	}
 	
 	public void menuNotaFiscal() {
+		 int opcao;
 		
 		do {
 			// Constroi o menu
