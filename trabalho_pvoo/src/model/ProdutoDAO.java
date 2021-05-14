@@ -42,12 +42,26 @@ public class ProdutoDAO {
 		return true;
 
 	}
+	
+	public Produto buscaProduto(int id) {
+		Produto produtoBusca = new Produto(id);
+		int pos = encontrarProduto(produtoBusca);
+		
+		if (pos != -1) {
+			return this.produtos[pos];
+		}
+		
+		return null;
+	}
+	
+	
+	
 
 //Encontra a posição do produto
 
-	public int encontraProduto(Produto produtoASerExcluido) {
+	public int encontrarProduto(Produto produtoBusca) {
 		for (int i = 0; produtos.length > i; i++) {
-			if (produtos[i] != null && produtos[i].equals(produtoASerExcluido)) {
+			if (produtos[i] != null && produtos[i].equals(produtoBusca)) {
 				return i;
 			}
 		}
@@ -57,7 +71,7 @@ public class ProdutoDAO {
 //Recebe um produto como parâmetro e "exclui" - null
 
 	public boolean deletaProduto(Produto produtoASerExcluido) {
-		int posicaoProduto = encontraProduto(produtoASerExcluido);
+		int posicaoProduto = encontrarProduto(produtoASerExcluido);
 
 		if (posicaoProduto == -1 || posicaoProduto == 0) {
 			return false;
@@ -68,8 +82,8 @@ public class ProdutoDAO {
 	}
 
 	public String listarProduto(Produto c) {
-		if (encontraProduto(c) != -1) {
-			return produtos[encontraProduto(c)].toString();
+		if (encontrarProduto(c) != -1) {
+			return produtos[encontrarProduto(c)].toString();
 		}
 		return "Não encontrado.";
 	}
@@ -90,6 +104,10 @@ public class ProdutoDAO {
 		}
 
 		return listaProduto;
+	}
+	
+	public Produto[] getProduto() {
+		return produtos;
 	}
 
 }

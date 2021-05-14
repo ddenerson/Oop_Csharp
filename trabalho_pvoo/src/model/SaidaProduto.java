@@ -13,8 +13,9 @@ public class SaidaProduto {
 	private LocalDate dataCriacao;
 	private LocalDate dataModificado;
 
-	public SaidaProduto() {
+	public SaidaProduto(int id) {
 		super();
+		this.id = id;
 		// TODO Auto-generated constructor stub
 	}
 

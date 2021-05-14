@@ -54,7 +54,16 @@ public class FornecedorDAO {
 			return -1;
 		}
 		
-		
+		public Fornecedor buscaFornecedor(int id) {
+			Fornecedor fornecedorBusca = new Fornecedor(id);
+			int pos = encontrarFornecedor(fornecedorBusca);
+			
+			if (pos != -1) {
+				return this.fornecedor[pos];
+			}
+			
+			return null;
+		}
 		
 		//Recebe um produto como parâmetro e "exclui" - null
 
@@ -94,5 +103,9 @@ public class FornecedorDAO {
 			}
 
 			return listaClientes;
+		}
+		
+		public Fornecedor[] getFornecedor() {
+			return fornecedor;
 		}
 }

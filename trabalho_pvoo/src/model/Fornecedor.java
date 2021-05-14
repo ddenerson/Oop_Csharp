@@ -13,9 +13,10 @@ public class Fornecedor
 	private LocalDate dataCriacao;
 	private LocalDate dataModificado;
 	
-	public Fornecedor() {
-		super();
+	public Fornecedor(int id) {
 		// TODO Auto-generated constructor stub
+		super();
+		this.id = id;
 	}
 
 	public Fornecedor(int id, String nome, String telefone, String cnpj, int estoqueMaximo, LocalDate dataCriacao,

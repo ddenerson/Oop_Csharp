@@ -3,4 +3,14 @@
     <fullyQualifiedTypeName name="java.time.LocalDate"/>
     <fullyQualifiedTypeName name="model.UsuarioDAO"/>
     <fullyQualifiedTypeName name="model.Usuario"/>
+    <fullyQualifiedTypeName name="model.Fornecedor"/>
+    <fullyQualifiedTypeName name="model.FornecedorDAO"/>
+    <fullyQualifiedTypeName name="model.ProdutoDAO"/>
+    <fullyQualifiedTypeName name="model.Produto"/>
+    <fullyQualifiedTypeName name="model.EntradaProdutoDAO"/>
+    <fullyQualifiedTypeName name="model.EntradaProduto"/>
+    <fullyQualifiedTypeName name="model.EstoqueDAO"/>
+    <fullyQualifiedTypeName name="model.Estoque"/>
+    <fullyQualifiedTypeName name="model.SaidaProdutoDAO"/>
+    <fullyQualifiedTypeName name="model.SaidaProduto"/>
 </qualifiedTypeNameHistroy>

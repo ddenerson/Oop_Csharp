@@ -70,8 +70,15 @@ public class EstoqueDAO {
 			estoque[posicaoOrdem] = null;
 			return true;
 	}
+	
+	public String listarEstoque(Estoque c) {
+		if (encontrarOrdemEstoque(c) != -1) {
+			return estoque[encontrarOrdemEstoque(c)].toString();
+		}
+		return "Não encontrado.";
+	}
 
-	public String listarTodasOrdens() {
+	public String listarTodasEstoque() {
 
 		String listaEstoques = "-- Ordens de Estoque -- " + "\n";
 
@@ -86,4 +93,5 @@ public class EstoqueDAO {
 
 		return listaEstoques;
 	}
+	
 }

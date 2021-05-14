@@ -47,6 +47,13 @@ public class EntradaProdutoDAO {
 			return -1;
 		}
 		
+		public String listarEntradaProduto(EntradaProduto c) {
+			if (encontrarEntradaProduto(c) != -1) {
+				return entradaProduto[encontrarEntradaProduto(c)].toString();
+			}
+			return "Não encontrado.";
+		}
+		
 		// Busca estoque
 		public EntradaProduto buscaEntradaProduto(int id) {
 			   EntradaProduto entradaProdutoBusca = new EntradaProduto(id);
@@ -86,6 +93,4 @@ public class EntradaProdutoDAO {
 			return listaEntradaProduto;
 		}
 		
-		
-	
 }
