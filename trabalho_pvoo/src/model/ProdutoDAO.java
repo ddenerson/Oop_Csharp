@@ -38,6 +38,7 @@ public class ProdutoDAO {
 		if (posicao == -1) {
 			return false;
 		}
+		novoProduto.setId(posicao + 1);
 		this.produtos[posicao] = novoProduto;
 		return true;
 
@@ -105,6 +106,30 @@ public class ProdutoDAO {
 
 		return listaProduto;
 	}
+	
+	// Recebe um objeto do tipo Produto contendo o id e as informações que serão atualizadas
+		public boolean atualizaProduto(Produto p) {
+			
+			// É realizada a busca pelo Produto que será atualizado
+			Produto produto = this.buscaProduto(p.getId());
+			// É verificado quais informações foram preenchidas para atualizar
+			if (p.getStatus() != null) {
+				produto.setStatus(p.getStatus());
+			}
+			if (p.getDescricao() != null) {
+				produto.setDescricao(p.getDescricao());
+			}
+			if (p.getEstoque_minimo() != 0) {
+				produto.setEstoque_minimo(p.getEstoque_minimo());
+			}
+			if (p.getEstoque_maximo() != 0) {
+				produto.setEstoque_maximo(p.getEstoque_maximo());
+			}
+			// atualiza a data de modificação para o momento em que é atualizada
+			produto.setData_modificacao(LocalDate.now());
+
+			return true;
+		}
 	
 	public Produto[] getProduto() {
 		return produtos;

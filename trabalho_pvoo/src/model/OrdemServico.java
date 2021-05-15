@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 
 public class OrdemServico {
-	
+
 	private int id;
 	private String descricao;
 	private String estado;
@@ -12,16 +12,12 @@ public class OrdemServico {
 	private String mecanico;
 	private LocalDate dataCriacao;
 	private LocalDate dataModificacao;
-	
-	
-	
-	public OrdemServico(int id)
-	{
+
+	public OrdemServico(int id) {
 		super();
 		// TODO Auto-generated constructor stub
 		this.id = id;
 	}
-	
 
 	public OrdemServico(int id, String descricao, String estado, Cliente cliente, double valor, String mecanico,
 			LocalDate data_criacao, LocalDate data_modificacao) {
@@ -106,10 +102,27 @@ public class OrdemServico {
 				+ ", valor=" + valor + ", mecanico=" + mecanico + ", dataCriacao=" + dataCriacao + ", dataModificacao="
 				+ dataModificacao + "] \n";
 	}
-	
-	
-	
-	
 
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrdemServico other = (OrdemServico) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
 }

@@ -15,9 +15,18 @@ public class Estoque {
 	
 	public Estoque(int id) {
 		super();
-		// TODO Auto-generated constructor stub
 		this.id = id;
 	}
+	
+	public Estoque(Produto produto, int quantidade, double valor_unitario, LocalDate dataCriação,
+			LocalDate dataModificado) {
+		super();
+		this.produto = produto;
+		this.quantidade = quantidade;
+		this.valor_unitario = valor_unitario;
+		this.dataCriacao = dataCriação;
+		this.dataModificado = dataModificado;
+	}	
 
 	public Estoque(int id, Produto produto, int quantidade, double valor_unitario, LocalDate dataCriação,
 			LocalDate dataModificado) {
@@ -77,6 +86,35 @@ public class Estoque {
 	public void setData_modificado(LocalDate data_modificado) {
 		this.dataModificado = data_modificado;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Estoque other = (Estoque) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Estoque [id=" + id + ", produto=" + produto + ", quantidade=" + quantidade + ", valor_unitario="
+				+ valor_unitario + ", dataCriacao=" + dataCriacao + ", dataModificado=" + dataModificado + "]\n";
+	}
 	
+		
 	
 }

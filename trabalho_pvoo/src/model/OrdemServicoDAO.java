@@ -1,7 +1,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class OrdemServicoDAO {
 	
@@ -43,9 +42,7 @@ public class OrdemServicoDAO {
 		}
 
 		return -1;
-	}
-	
-	
+	}	
 
 	// Insere uma nova ordem de serviço. Se existe um espaço vazio entre duas ordens de serviço,
 	// a nova ordem de serviço será criada nessa posição
@@ -95,7 +92,6 @@ public class OrdemServicoDAO {
 			if (ordemServico.getEstado() != null) {
 				ordem.setEstado(ordemServico.getEstado());
 			}
-			// TODO: Implementar busca por cliente para que ele possa ser inserido na ordem de servico
 			if (ordemServico.getCliente() != null) {
 				ordem.setCliente(ordemServico.getCliente());
 			}
@@ -108,6 +104,18 @@ public class OrdemServicoDAO {
 			// atualiza a data de modificação para o momento em que o objeto é atualizado
 			ordem.setData_modificacao(LocalDate.now());
 			
+			return true;
+		}
+		
+		// Recebe uma OrdemServico como parâmetro e "exclui" - null
+		public boolean deletaOrdemServico(OrdemServico ordem) {
+			int posicao = encontrarOrdem(ordem);
+
+			if (posicao == -1) {
+				return false;
+			}
+
+			ordens[posicao] = null;
 			return true;
 		}
 		

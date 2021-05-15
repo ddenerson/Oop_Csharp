@@ -34,13 +34,14 @@ public class UsuarioDAO {
 	// Insere um novo Produto.Se existe um espaço vazio entre 2 produtos,
 		// Então o novo produto será criado nessa posição
 
-		public boolean insereUsuario(Usuario novoUsuarios) {
+		public boolean insereUsuario(Usuario novoUsuario) {
 
 			int posicao = verificaPosicao();
 			if (posicao == -1) {
 				return false;
 			}
-			this.usuarios[posicao] = novoUsuarios;
+			novoUsuario.setId(posicao + 1);
+			this.usuarios[posicao] = novoUsuario;
 			return true;
 
 		}
@@ -95,6 +96,49 @@ public class UsuarioDAO {
 			}
 
 			return listaUsuarios;
+		}
+		
+		// Busca usuário
+		public Usuario buscaUsuario(int id) {
+			Usuario usuario = new Usuario(id);
+			int pos = encontrarUsuario(usuario);
+			
+			if (pos != -1) {
+				return this.usuarios[pos];
+			}
+			
+			return null;
+		}
+		
+		
+		// Recebe um objeto do tipo Usuario contendo o id e as informações que serão atualizadas
+		public boolean atualizaUsuario(Usuario u) {
+			
+			// É realizada a busca pelo ususario que será atualizado
+			Usuario usuario = buscaUsuario(u.getId());
+			// É verificado quais informações foram preenchidas para atualizar
+			if (u.getNome() != null) {
+				usuario.setNome(u.getNome());
+			}
+			if (u.getEndereco() != null) {
+				usuario.setEndereco(u.getEndereco());
+			}
+			if (u.getCpf() != null) {
+				usuario.setCpf(u.getCpf());
+			}
+			if (u.getTelefone() != null) {
+				usuario.setTelefone(u.getTelefone());
+			}
+			if (u.getLogin() != null) {
+				usuario.setLogin(u.getLogin());
+			}
+			if (u.getSenha() != null) {
+				usuario.setSenha(u.getSenha());
+			}
+			// atualiza a data de modificação para o momento em que é atualizada
+			usuario.setDataModificacao(LocalDate.now());
+
+			return true;
 		}
 
 }

@@ -60,12 +60,12 @@ public class Main {
 			// Menu que realiza as operações
 			switch (opcao) {
 
-			// Cria um novo cliente e insere no DAO
+			// Cria um novo usuario e insere no DAO
 			case 1:
 
 				System.out.println("-- NOVO USUARIO -- \n");
 
-				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuario: "));
+				// Captura os dados necessários para criar um usuário
 				String nome = JOptionPane.showInputDialog("Nome: ");
 				String endereco = JOptionPane.showInputDialog("Endereço: ");
 				String cpf = JOptionPane.showInputDialog("CPF: ");
@@ -75,8 +75,11 @@ public class Main {
 				LocalDate dataCriacao = LocalDate.now();
 				LocalDate dataModificacao = LocalDate.now();
 
-				Usuario novoUsario = new Usuario(id, nome, endereco, cpf, telefone, login, senha, dataCriacao,
+				// Instância um objeto Usuário usando os dados capturados anteriormente
+				Usuario novoUsario = new Usuario(nome, endereco, cpf, telefone, login, senha, dataCriacao,
 						dataModificacao);
+				
+				// Insere o novo usuário no vetor do DAO
 				boolean resultado = usuarioDAO.insereUsuario(novoUsario);
 
 				if (resultado) {
@@ -84,26 +87,35 @@ public class Main {
 				} else {
 					System.out.println("Não foi possível cadastrar o usuario!");
 				}
+				
 				break;
 			case 2:
 
 				System.out.println("-- CONSULTAR USUARIO -- \n");
-				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
+				
+				// Captura o id do usuário que será consultado
+				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
 				Usuario usuarioPesquisado = new Usuario(id);
 				String usuarioString = usuarioDAO.listarUsario(usuarioPesquisado);
 
-				// Se o cliente existir os dados são mostrados
+				// Se o usuário existir os dados são mostrados
 				System.out.println(usuarioString);
+				
 				break;
 			case 3:
 				System.out.println("-- USUARIOS CADASTRADOS -- \n");
+				
+				// Retorna uma string contendo todos os usuários do vetor que está no DAO
 				String listaUsuarios = usuarioDAO.listarTodosUsuarios();
-				System.out.println(usuarioDAO);
+				
+				// Lista todos os usuários
+				System.out.println(listaUsuarios);
+				
 				break;
 			case 4:
 				System.out.println("-- ATUALIZAR USUARIOS -- \n");
 				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuarios: "));
-				// menuAtualizarUsuario(id);
+				menuAtualizarUsuario(id);
 				break;
 			case 5:
 				System.out.println("-- REMOVER USUARIOS -- \n");
@@ -188,7 +200,11 @@ public class Main {
 				break;
 			case 4:
 				System.out.println("-- ATUALIZAR CLIENTE -- \n");
+				
+				// Captura o id do cliente que será atualizado
 				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
+				
+				// Método que apresenta o menu com as opções
 				menuAtualizarCliente(id);
 				break;
 			case 5:
@@ -214,6 +230,7 @@ public class Main {
 
 	public void menuOrdemServico() {
 		int opcao;
+		OrdemServico ordem;
 
 		do {
 			// Constroi o menu
@@ -279,17 +296,20 @@ public class Main {
 				int idOS = Integer.parseInt(JOptionPane.showInputDialog("Digite o id da ordem de serviço: "));
 				menuAtualizarOrdemServico(idOS);
 				break;
-//			case 5:
-//				System.out.println("-- REMOVER CLIENTE -- \n");
-//				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
-//				Cliente clienteDeleta = new Cliente(idDeleta);
-//				boolean resultadoDeleta = clienteDAO.deletaCliente(clienteDeleta);
-//				if (resultadoDeleta) {
-//					System.out.println("Cliente deletado com sucesso!");
-//				}else {
-//					System.out.println("Não foi possível deletar o cliente!");
-//				}
-//				break;
+			case 5:
+				System.out.println("-- REMOVER ORDEM DE SERVIÇO -- \n");
+				
+				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id da ordem de serviço: "));
+				ordem = new OrdemServico(idDeleta);
+				
+				boolean resultadoDeleta = ordemServicoDAO.deletaOrdemServico(ordem);
+						
+				if (resultadoDeleta) {
+					System.out.println("Ordem de serviço excluída com sucesso!");
+				}else {
+					System.out.println("Não foi possível excluir a ordem de serviço!");
+				}
+				break;
 			case 6:
 				System.out.println("Retorna ao menu principal");
 				break;
@@ -326,7 +346,6 @@ public class Main {
 
 				System.out.println("-- NOVO FORNECEDOR -- \n");
 
-				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuario: "));
 				String nome = JOptionPane.showInputDialog("Nome: ");
 				String telefone = JOptionPane.showInputDialog("Telefone: ");
 				String cnpj = JOptionPane.showInputDialog("CNPJ: ");
@@ -334,7 +353,7 @@ public class Main {
 				LocalDate dataCriacao = LocalDate.now();
 				LocalDate dataModificacao = LocalDate.now();
 
-				Fornecedor novofornecedor = new Fornecedor(id, nome, telefone, cnpj, estoqueMaximo, dataCriacao,
+				Fornecedor novofornecedor = new Fornecedor(nome, telefone, cnpj, estoqueMaximo, dataCriacao,
 						dataModificacao);
 				boolean resultado = fornecedorDAO.insereFornecedor(novofornecedor);
 
@@ -346,7 +365,7 @@ public class Main {
 				break;
 			case 2:
 				System.out.println("-- CONSULTAR FORNECEDOR -- \n");
-				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
+				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do fornecedor: "));
 				Fornecedor fornecedorPesquisado = new Fornecedor(id);
 				String fornecedorString = fornecedorDAO.listarFornecedor(fornecedorPesquisado);
 
@@ -355,16 +374,17 @@ public class Main {
 			case 3:
 				System.out.println("-- FORNECEDOR CADASTRADOS -- \n");
 				String listaFornecedor = fornecedorDAO.listarTodosFornecedor();
-				System.out.println(fornecedorDAO);
+				System.out.println(listaFornecedor);
+				
 				break;
 			case 4:
 				System.out.println("-- ATUALIZAR FORNECEDOR -- \n");
-				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuarios: "));
-				// menuAtualizarUsuario(id);
+				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do fornecedor: "));
+				menuAtualizarFornecedor(id);
 				break;
 			case 5:
 				System.out.println("-- REMOVER FORNECEDOR -- \n");
-				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuarios: "));
+				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do fornecedor: "));
 				Fornecedor fornecedorDeleta = new Fornecedor(idDeleta);
 				boolean resultadoDeleta = fornecedorDAO.deletaFornecedor(fornecedorDeleta);
 				if (resultadoDeleta) {
@@ -408,9 +428,9 @@ public class Main {
 
 			case 1:
 
-				System.out.println("-- NOVO PRODUTO -- \\n");
-
-				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuario: "));
+				System.out.println("-- NOVO PRODUTO -- \n");
+				
+				// Captura os dados necessários para criar um novo produto
 				String status = JOptionPane.showInputDialog("Status: ");
 				String descricao = JOptionPane.showInputDialog("Descricao: ");
 				int estoqueMinimo = Integer.parseInt(JOptionPane.showInputDialog("Digite o estoque minimo: "));
@@ -418,23 +438,31 @@ public class Main {
 				LocalDate dataCriacao = LocalDate.now();
 				LocalDate dataModificacao = LocalDate.now();
 
-				Produto novoProduto = new Produto(id, status, descricao, estoqueMinimo, estoqueMaximo, dataCriacao,
+				// Cria um objeto do tipo Produto que será inserido no DAO
+				Produto novoProduto = new Produto(status, descricao, estoqueMinimo, estoqueMaximo, dataCriacao,
 						dataModificacao);
 				boolean resultado = produtoDAO.insereProduto(novoProduto);
 
 				if (resultado) {
-					System.out.println("Usuario cadastrado com sucesso!");
+					System.out.println("Produto cadastrado com sucesso!");
 				} else {
-					System.out.println("Não foi possível cadastrar o usuario!");
+					System.out.println("Não foi possível cadastrar o produto!");
 				}
 				break;
 			case 2:
 
 				System.out.println("-- CONSULTAR PRODUTO -- \n");
-				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do produto: "));
+				
+				// Captura o id do produto que será pesquisado
+				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do produto: "));
+				
+				// Cria um objeto do tipo produto contendo apenas o id
 				Produto produtoPesquisado = new Produto(id);
+				
+				// Recebe o objeto em forma de string
 				String produtoString = produtoDAO.listarProduto(produtoPesquisado);
 
+				// Exibe a string do objeto Produto
 				System.out.println(produtoString);
 
 				break;
@@ -442,24 +470,26 @@ public class Main {
 
 				System.out.println("-- PRODUTOS CADASTRADOS -- \n");
 				String listaProdutos = produtoDAO.listarTodosProdutos();
-				System.out.println(produtoDAO);
+				System.out.println(listaProdutos);
 
 				break;
 			case 4:
 				System.out.println("-- ATUALIZAR PRODUTOS -- \n");
-				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do produtos: "));
+				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do produto: "));
+				menuAtualizarProduto(id);
 				break;
 			case 5:
-				System.out.println("-- REMOVER USUARIOS -- \n");
-				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuarios: "));
+				System.out.println("-- REMOVER PRODUTOS -- \n");
+				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do produto: "));
 				Produto produtoDeleta = new Produto(idDeleta);
 				boolean resultadoDeleta = produtoDAO.deletaProduto(produtoDeleta);
 
 				if (resultadoDeleta) {
-					System.out.println("Usuario deletado com sucesso!");
+					System.out.println("Produto deletado com sucesso!");
 				} else {
-					System.out.println("Não foi possível deletar o usuario!");
+					System.out.println("Não foi possível deletar o produto!");
 				}
+				
 				break;
 			case 6:
 				System.out.println("Retorna ao menu principal");
@@ -526,7 +556,7 @@ public class Main {
 			case 3:
 				System.out.println("--  CADASTRADOS ENTRADA DE PRODUTOS -- \n");
 				String listaEntradaProdutos = entradaProdutoDAO.listarTodasEntradasProduto();
-				System.out.println(entradaProdutoDAO);
+				System.out.println(listaEntradaProdutos);
 				break;
 			case 4:
 				System.out.println("-- ATUALIZAR ENTRADA DE PRODUTOS -- \n");
@@ -561,7 +591,7 @@ public class Main {
 		do {
 			// Constroi o menu
 			StringBuilder menu = new StringBuilder("-- ESTOQUE  --").append("\n");
-			menu.append("1. Novo Produto").append("\n");
+			menu.append("1. Novo Estoque").append("\n");
 			menu.append("2. Consultar Estoque").append("\n");
 			menu.append("3. Listar Estoque").append("\n");
 			menu.append("4. Atualizar Estoque").append("\n");
@@ -578,21 +608,21 @@ public class Main {
 
 			case 1:
 
-				System.out.println("-- NOVO USUARIO ESTOQUE -- \n");
-				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do usuario: "));
+				System.out.println("-- NOVO ESTOQUE -- \n");
+				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do produto: "));
 				Produto produto = produtoDAO.buscaProduto(id);
 				int quantidade = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade: "));
 				double valorUnitario = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor unitario: "));
 				LocalDate dataCriacao = LocalDate.now();
 				LocalDate dataModificacao = LocalDate.now();
 
-				Estoque novoEstoque = new Estoque(id, produto, quantidade, valorUnitario, dataCriacao, dataModificacao);
+				Estoque novoEstoque = new Estoque(produto, quantidade, valorUnitario, dataCriacao, dataModificacao);
 				boolean resultado = estoqueDAO.insereEstoque(novoEstoque);
 
 				if (resultado) {
-					System.out.println("Usuario cadastrado com sucesso!");
+					System.out.println("Estoque cadastrado com sucesso!");
 				} else {
-					System.out.println("Não foi possível cadastrar o usuario!");
+					System.out.println("Não foi possível cadastrar o estoque!");
 				}
 				break;
 			case 2:
@@ -606,17 +636,24 @@ public class Main {
 			case 3:
 				System.out.println("-- ESTOQUE CADASTRADOS -- \n");
 				String listaEstoque = estoqueDAO.listarTodasEstoque();
-				System.out.println(estoqueDAO);
+				System.out.println(listaEstoque);
 				break;
 			case 4:
 				System.out.println("-- ATUALIZAR ESTOQUE -- \n");
 				id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do estoque: "));
+				menuAtualizarEstoque(id);
 				break;
 			case 5:
 				System.out.println("-- REMOVER ESTOQUE -- \n");
 				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do estoque: "));
 				Estoque estoqueDeleta = new Estoque(idDeleta);
 				boolean resultadoDeleta = estoqueDAO.deletaEstoque(estoqueDeleta);
+				
+				if (resultadoDeleta) {
+					System.out.println("Estoque removido com sucesso!");
+				}else {
+					System.out.println("Não foi possível remover o estoque!");
+				}
 				break;
 			case 6:
 				System.out.println("Retorna ao menu principal");
@@ -669,9 +706,9 @@ public class Main {
 				boolean resultado = saidaProdutoDAO.insereSaidaProduto(novoSaidaProduto);
 
 				if (resultado) {
-					System.out.println("Usuario cadastrado com sucesso!");
+					System.out.println("Produto cadastrado com sucesso!");
 				} else {
-					System.out.println("Não foi possível cadastrar o usuario!");
+					System.out.println("Não foi possível cadastrar o produto!");
 				}
 				break;
 			case 2:
@@ -685,7 +722,7 @@ public class Main {
 			case 3:
 				System.out.println("-- SAIDA PRODUTOS CADASTRADOS -- \n");
 				String listaProdutos = saidaProdutoDAO.listarSaidaProdutoTodos();
-				System.out.println(saidaProdutoDAO);
+				System.out.println(listaProdutos);
 				break;
 			case 4:
 				System.out.println("-- ATUALIZAR SAIDA PRODUTOS -- \n");
@@ -767,19 +804,19 @@ public class Main {
 			switch (opcao) {
 			// Direciona para os menus
 			case 1:
-
+				menuUsuario();
 				break;
 			case 2:
 				menuCliente();
 				break;
 			case 3:
-
+				menuFornecedor();
 				break;
 			case 4:
-
+				menuProduto();
 				break;
 			case 5:
-
+				menuEstoque();
 				break;
 			case 6:
 				break;
@@ -848,6 +885,70 @@ public class Main {
 		} while (opcao != 5);
 
 	}
+	
+	public void menuAtualizarUsuario(int id) {
+		int opcao;
+		Usuario usuario = new Usuario(id);
+
+		do {
+			// Constroi o menu
+			StringBuilder menu = new StringBuilder("-- ATUALIZAR USUÁRIO --").append("\n");
+			menu.append("1. NOME").append("\n");
+			menu.append("2. ENDEREÇO").append("\n");
+			menu.append("3. CPF").append("\n");
+			menu.append("4. TELEFONE").append("\n");
+			menu.append("5. LOGIN").append("\n");
+			menu.append("6. SENHA").append("\n");
+			menu.append("7. VOLTAR").append("\n");
+
+			// Exibe o menu no terminal
+			System.out.println(menu);
+
+			// Captura a opção escolhida
+			opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+
+			// Menu que realiza as operações
+			switch (opcao) {
+			case 1:
+				String nome = JOptionPane.showInputDialog("Digite o novo nome: ");
+				usuario.setNome(nome);
+				usuarioDAO.atualizaUsuario(usuario);
+				break;
+			case 2:
+				String endereco = JOptionPane.showInputDialog("Digite o novo endereço: ");
+				usuario.setEndereco(endereco);
+				usuarioDAO.atualizaUsuario(usuario);
+				break;
+			case 3:
+				String cpf = JOptionPane.showInputDialog("Digite o novo CPF: ");
+				usuario.setCpf(cpf);
+				usuarioDAO.atualizaUsuario(usuario);
+				break;
+			case 4:
+				String telefone = JOptionPane.showInputDialog("Digite o novo telefone: ");
+				usuario.setTelefone(telefone);
+				usuarioDAO.atualizaUsuario(usuario);
+				break;
+			case 5:
+				String login = JOptionPane.showInputDialog("Digite o novo login: ");
+				usuario.setLogin(login);
+				usuarioDAO.atualizaUsuario(usuario);
+				break;
+			case 6:
+				String senha = JOptionPane.showInputDialog("Digite a nova senha: ");
+				usuario.setSenha(senha);
+				usuarioDAO.atualizaUsuario(usuario);
+				break;
+			case 7:
+				System.out.println("Retornando a tela ao menu anterior...");
+				break;
+			default:
+				System.out.println("Opção inválida!");
+				break;
+			}
+		} while (opcao != 7);
+
+	}
 
 	public void menuAtualizarOrdemServico(int id) {
 		int opcao;
@@ -875,29 +976,29 @@ public class Main {
 			case 1:
 				String descricao = JOptionPane.showInputDialog("Digite a nova descrição: ");
 				ordemServico.setDescricao(descricao);
+				ordemServicoDAO.atualizarOrdem(ordemServico);
 
 				break;
 			case 2:
 				String estado = JOptionPane.showInputDialog("Digite o novo estado: ");
 				ordemServico.setEstado(estado);
-
+				ordemServicoDAO.atualizarOrdem(ordemServico);
 				break;
 			case 3:
-				String clienteId = JOptionPane.showInputDialog("Digite o id do cliente: ");
-				Cliente cliente = clienteDAO.buscaCliente(id);
-				System.out.println("Cliente encontrado? " + cliente);
+				int clienteId = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do cliente: "));
+				Cliente cliente = clienteDAO.buscaCliente(clienteId);
 				ordemServico.setCliente(cliente);
 				ordemServicoDAO.atualizarOrdem(ordemServico);
 				break;
-			case 4:
+			case 4:				
 				double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o novo valor: "));
 				ordemServico.setValor(valor);
-
+				ordemServicoDAO.atualizarOrdem(ordemServico);
 				break;
 			case 5:
 				String mecanico = JOptionPane.showInputDialog("Digite o novo mecânico: ");
 				ordemServico.setMecanico(mecanico);
-
+				ordemServicoDAO.atualizarOrdem(ordemServico);
 				break;
 			case 6:
 				System.out.println("Retornando a tela de menu...");
@@ -907,6 +1008,160 @@ public class Main {
 				break;
 			}
 		} while (opcao != 6);
+
+	}
+	
+	public void menuAtualizarProduto(int id) {
+		int opcao;
+		Produto produto = new Produto(id);
+
+		do {
+			// Constroi o menu
+			StringBuilder menu = new StringBuilder("-- ATUALIZAR PRODUTO --").append("\n");
+			menu.append("1. STATUS").append("\n");
+			menu.append("2. DESCRICAO").append("\n");
+			menu.append("3. ESTOQUE MINÍMO").append("\n");
+			menu.append("4. ESTOQUE MÁXIMO").append("\n");
+			menu.append("5. VOLTAR").append("\n");
+
+			// Exibe o menu no terminal
+			System.out.println(menu);
+
+			// Captura a opção escolhida
+			opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+
+			// Menu que realiza as operações
+			switch (opcao) {
+			// Direciona para os menus
+			case 1:
+				String status = JOptionPane.showInputDialog("Digite o novo status: ");
+				produto.setStatus(status);
+				produtoDAO.atualizaProduto(produto);
+				break;
+			case 2:
+				String descricao = JOptionPane.showInputDialog("Digite a nova descrição: ");
+				produto.setDescricao(descricao);
+				produtoDAO.atualizaProduto(produto);
+				break;
+			case 3:
+				int estoqueMin = Integer.parseInt(JOptionPane.showInputDialog("Digite o estoque minímo: "));
+				produto.setEstoque_minimo(estoqueMin);
+				produtoDAO.atualizaProduto(produto);
+				break;
+			case 4:
+				int estoqueMax = Integer.parseInt(JOptionPane.showInputDialog("Digite o estoque máximo: "));
+				produto.setEstoque_maximo(estoqueMax);
+				produtoDAO.atualizaProduto(produto);
+				break;
+			case 5:
+				System.out.println("Retornando a tela anterior...");
+				break;
+			default:
+				System.out.println("Opção inválida!");
+				break;
+			}
+		} while (opcao != 5);
+
+	}
+	
+	public void menuAtualizarFornecedor(int id) {
+		int opcao;
+		Fornecedor fornecedor = new Fornecedor(id);
+
+		do {
+			// Constroi o menu
+			StringBuilder menu = new StringBuilder("-- ATUALIZAR FORNECEDOR --").append("\n");
+			menu.append("1. NOME").append("\n");
+			menu.append("2. TELEFONE").append("\n");
+			menu.append("3. CNPJ").append("\n");
+			menu.append("4. ESTOQUE MÁXIMO").append("\n");
+			menu.append("5. VOLTAR").append("\n");
+
+			// Exibe o menu no terminal
+			System.out.println(menu);
+
+			// Captura a opção escolhida
+			opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+
+			// Menu que realiza as operações
+			switch (opcao) {
+			// Direciona para os menus
+			case 1:
+				String nome = JOptionPane.showInputDialog("Digite o novo nome: ");
+				fornecedor.setNome(nome);
+				fornecedorDAO.atualizaFornecedor(fornecedor);
+				break;
+			case 2:
+				String telefone = JOptionPane.showInputDialog("Digite o novo telefone: ");
+				fornecedor.setTelefone(telefone);
+				fornecedorDAO.atualizaFornecedor(fornecedor);
+				break;
+			case 3:
+				String cnpj = JOptionPane.showInputDialog("Digite o novo CNPJ: ");
+				fornecedor.setCnpj(cnpj);
+				fornecedorDAO.atualizaFornecedor(fornecedor);
+				break;
+			case 4:
+				int estoqueMax = Integer.parseInt(JOptionPane.showInputDialog("Digite o estoque máximo: "));
+				fornecedor.setEstoqueMaximo(estoqueMax);
+				fornecedorDAO.atualizaFornecedor(fornecedor);
+				break;
+			case 5:
+				System.out.println("Retornando a tela anterior...");
+				break;
+			default:
+				System.out.println("Opção inválida!");
+				break;
+			}
+		} while (opcao != 5);
+
+	}
+	
+	public void menuAtualizarEstoque(int id) {
+		int opcao;
+		Estoque estoque = new Estoque(id);
+
+		do {
+			// Constroi o menu
+			StringBuilder menu = new StringBuilder("-- ATUALIZAR ESTOQUE --").append("\n");
+			menu.append("1. PRODUTO").append("\n");
+			menu.append("2. QUANTIDADE").append("\n");
+			menu.append("3. VALOR UNITÁRIO").append("\n");
+			menu.append("4. VOLTAR").append("\n");
+
+			// Exibe o menu no terminal
+			System.out.println(menu);
+
+			// Captura a opção escolhida
+			opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
+
+			// Menu que realiza as operações
+			switch (opcao) {
+			// Direciona para os menus
+			case 1:
+				int produtoId = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do novo produto: "));
+				Produto produto = produtoDAO.buscaProduto(produtoId);
+				estoque.setProduto(produto);
+				estoqueDAO.atualizaEstoque(estoque);
+				break;
+			case 2:
+				int quantidade = Integer.parseInt(JOptionPane.showInputDialog("Digite a nova quantidade: "));
+				estoque.setQuantidade(quantidade);
+				estoqueDAO.atualizaEstoque(estoque);
+				break;
+			case 3:
+				double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o novo valor unitário: "));
+				estoque.setValor_unitario(valor);
+				estoqueDAO.atualizaEstoque(estoque);
+				break;
+			case 4:
+				System.out.println("Retornando a tela anterior...");
+				break;
+			default:
+				System.out.println("Opção inválida!");
+				break;
+			}
+		} while (opcao != 4);
 
 	}
 

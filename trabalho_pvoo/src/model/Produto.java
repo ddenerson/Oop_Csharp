@@ -12,16 +12,27 @@ public class Produto {
 	private int estoqueMaximo;
 	private LocalDate dataCriacao;
 	private LocalDate dataModificacao;
-	
-	public Produto(int id)
-	{
+
+	public Produto(int id) {
 		super();
 		this.id = id;
-		// TODO Auto-generated constructor stub
 	}
 
-	public Produto(int id, String status, String descricao, int estoque_minimo, int estoque_maximo, LocalDate dataCriacao,
-			LocalDate dataModificacao) {
+
+	public Produto(String status, String descricao, int estoque_minimo, int estoque_maximo,
+			LocalDate dataCriacao, LocalDate dataModificacao) {
+		super();
+		this.status = status;
+		this.descricao = descricao;
+		this.estoqueMinimo = estoque_minimo;
+		this.estoqueMaximo = estoque_maximo;
+		this.dataCriacao = dataCriacao;
+		this.dataModificacao = dataModificacao;
+	}
+
+	
+	public Produto(int id, String status, String descricao, int estoque_minimo, int estoque_maximo,
+			LocalDate dataCriacao, LocalDate dataModificacao) {
 		super();
 		this.id = id;
 		this.status = status;
@@ -94,5 +105,27 @@ public class Produto {
 				+ estoqueMinimo + ", estoqueMaximo=" + estoqueMaximo + ", dataCriacao=" + dataCriacao
 				+ ", dataModificacao=" + dataModificacao + "]\n";
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
 }

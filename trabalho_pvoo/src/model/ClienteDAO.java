@@ -84,6 +84,7 @@ public class ClienteDAO {
 		int pos = encontrarCliente(clienteBusca);
 		
 		if (pos != -1) {
+			System.out.println(this.clientes[pos]);
 			return this.clientes[pos];
 		}
 		
@@ -92,6 +93,7 @@ public class ClienteDAO {
 	
 	// Recebe um objeto do tipo cliente contendo o id e as informações que serão atualizadas
 	public boolean atualizaCliente(Cliente c) {
+		
 		// É realizada a busca pelo cliente que será atualizado
 		Cliente clienteBusca = this.buscaCliente(c.getId());
 		// É verificado quais informações foram preenchidas para atualizar

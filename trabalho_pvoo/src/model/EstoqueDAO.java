@@ -9,8 +9,10 @@ public class EstoqueDAO {
 	
 	public EstoqueDAO(Produto[] produto ) {
 		
-		Estoque estoque1 = new Estoque(1,produto[0],100,150,LocalDate.now(),LocalDate.now());
-		Estoque estoque2 = new Estoque(1,produto[1],120,130,LocalDate.now(),LocalDate.now());
+		Estoque estoque1 = new Estoque(produto[0],100,150,LocalDate.now(),LocalDate.now());
+		Estoque estoque2 = new Estoque(produto[1],120,130,LocalDate.now(),LocalDate.now());
+		this.insereEstoque(estoque1);
+		this.insereEstoque(estoque2);
 		
 	}
 	
@@ -63,7 +65,7 @@ public class EstoqueDAO {
 	public boolean deletaEstoque(Estoque estoqueASerExcluido) {
 		   int posicaoOrdem = encontrarOrdemEstoque(estoqueASerExcluido);
 
-		   if (posicaoOrdem == -1 || posicaoOrdem == 0) {
+		   if (posicaoOrdem == -1) {
 					return false;
 				}
 
@@ -93,5 +95,28 @@ public class EstoqueDAO {
 
 		return listaEstoques;
 	}
+	
+	// Recebe um objeto do tipo Fornecedor contendo o id e as informações que serão atualizadas
+		public boolean atualizaEstoque(Estoque e) {
+
+			// É realizada a busca pelo Estoque que será atualizado
+			Estoque estoque = this.buscaEstoque(e.getId());
+			
+			// É verificado quais informações foram preenchidas para atualizar
+			if (e.getProduto() != null) {
+				estoque.setProduto(e.getProduto());
+			}
+			if (e.getQuantidade() != 0) {
+				estoque.setQuantidade(e.getQuantidade());
+			}
+			if (e.getValor_unitario() != 0.0d) {
+				estoque.setValor_unitario(e.getValor_unitario());
+			}
+			
+			// atualiza a data de modificação para o momento em que é atualizada
+			estoque.setData_modificado(LocalDate.now());
+
+			return true;
+		}
 	
 }

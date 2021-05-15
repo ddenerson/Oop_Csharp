@@ -3,8 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Fornecedor
-{
+public class Fornecedor {
 	private int id;
 	private String nome;
 	private String telefone;
@@ -12,11 +11,21 @@ public class Fornecedor
 	private int estoqueMaximo;
 	private LocalDate dataCriacao;
 	private LocalDate dataModificado;
-	
+
 	public Fornecedor(int id) {
-		// TODO Auto-generated constructor stub
 		super();
 		this.id = id;
+	}
+
+	public Fornecedor(String nome, String telefone, String cnpj, int estoqueMaximo, LocalDate dataCriacao,
+			LocalDate dataModificado) {
+		super();
+		this.nome = nome;
+		this.telefone = telefone;
+		this.cnpj = cnpj;
+		this.estoqueMaximo = estoqueMaximo;
+		this.dataCriacao = dataCriacao;
+		this.dataModificado = dataModificado;
 	}
 
 	public Fornecedor(int id, String nome, String telefone, String cnpj, int estoqueMaximo, LocalDate dataCriacao,
@@ -30,9 +39,6 @@ public class Fornecedor
 		this.dataCriacao = dataCriacao;
 		this.dataModificado = dataModificado;
 	}
-	
-	
-	
 
 	public int getId() {
 		return id;
@@ -94,11 +100,29 @@ public class Fornecedor
 	public String toString() {
 		return "Fornecedor [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", cnpj=" + cnpj
 				+ ", estoqueMaximo=" + estoqueMaximo + ", dataCriacao=" + dataCriacao + ", dataModificado="
-				+ dataModificado + "]";
+				+ dataModificado + "]\n";
 	}
-	
-	
-	
-	
-		
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Fornecedor other = (Fornecedor) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
 }
