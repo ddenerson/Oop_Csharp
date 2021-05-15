@@ -510,11 +510,11 @@ public class Main {
 		do {
 			// Constroi o menu
 			StringBuilder menu = new StringBuilder("-- ENTRADA DE PRODUTO  --").append("\n");
-			menu.append("1. Novo Produto").append("\n");
-			menu.append("2. Consultar Produto").append("\n");
-			menu.append("3. Listar Produto").append("\n");
-			menu.append("4. Atualizar Produto").append("\n");
-			menu.append("5. Remover Produto").append("\n");
+			menu.append("1. Nova Entrada de Produto").append("\n");
+			menu.append("2. Consultar Entrada de Produto").append("\n");
+			menu.append("3. Listar Entrada de Produto").append("\n");
+			menu.append("4. Atualizar Entrada de Produto").append("\n");
+			menu.append("5. Remover Entrada de Produto").append("\n");
 			menu.append("6. Voltar").append("\n");
 
 			// Exibe o menu no terminal
@@ -528,15 +528,15 @@ public class Main {
 			case 1:
 
 				System.out.println("-- NOVA ENTRADA DE PRODUTO -- \n");
-				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id da entrada do produto: "));
+				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do produto: "));
 				Produto produto = produtoDAO.buscaProduto(id);
 				int quantidade = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade: "));
-				int valorUnitario = Integer.parseInt(JOptionPane.showInputDialog("Digite o valor unitario: "));
+				double valorUnitario = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor unitario: "));
 				Fornecedor fornecedor = fornecedorDAO.buscaFornecedor(id);
 				LocalDate dataCriacao = LocalDate.now();
 				LocalDate dataModificacao = LocalDate.now();
 
-				EntradaProduto novoEntradaProduto = new EntradaProduto(id, produto, quantidade, valorUnitario,
+				EntradaProduto novoEntradaProduto = new EntradaProduto(produto, quantidade, valorUnitario,
 						fornecedor, dataCriacao, dataModificacao);
 				boolean resultado = entradaProdutoDAO.insereEntradaProduto(novoEntradaProduto);
 
@@ -674,7 +674,7 @@ public class Main {
 		do {
 			// Constroi o menu
 			StringBuilder menu = new StringBuilder("-- SAIDA PRODUTO  --").append("\n");
-			menu.append("1. Novo Produto").append("\n");
+			menu.append("1. Nova Saida de Produto").append("\n");
 			menu.append("2. Consultar Saida Produto").append("\n");
 			menu.append("3. Listar Saida de Produtos ").append("\n");
 			menu.append("4. Atualizar Saida Produto").append("\n");
@@ -691,7 +691,7 @@ public class Main {
 
 			case 1:
 
-				System.out.println("-- NOVO PRODUTO -- \n");
+				System.out.println("-- NOVA SAIDA DE PRODUTO -- \n");
 
 				int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do produto: "));
 				Produto produto = produtoDAO.buscaProduto(id);
@@ -701,7 +701,7 @@ public class Main {
 				LocalDate dataCriacao = LocalDate.now();
 				LocalDate dataModificacao = LocalDate.now();
 
-				SaidaProduto novoSaidaProduto = new SaidaProduto(id, produto, quantidade, valorUnitario, fornecedor,
+				SaidaProduto novoSaidaProduto = new SaidaProduto(produto, quantidade, valorUnitario, fornecedor,
 						dataCriacao, dataModificacao);
 				boolean resultado = saidaProdutoDAO.insereSaidaProduto(novoSaidaProduto);
 
@@ -793,7 +793,11 @@ public class Main {
 			menu.append("5. ESTOQUE").append("\n");
 			menu.append("6. NOTAS FISCAIS").append("\n");
 			menu.append("7. ORDENS DE SERVIÇO").append("\n");
-			menu.append("8. SAIR").append("\n");
+			menu.append("8. ENTRADA DE PRODUTO").append("\n");
+			menu.append("9. SAIDA DE PRODUTO").append("\n");
+			menu.append("10. SAIR").append("\n");
+
+
 			// Exibe o menu no terminal
 			System.out.println(menu);
 
@@ -824,13 +828,19 @@ public class Main {
 				menuOrdemServico();
 				break;
 			case 8:
+				menuEntradaProduto();
+				break;
+			case 9:
+				menuSaidaProduto();
+				break;
+			case 10:
 				System.out.println("Retornando a tela de login...");
 				break;
 			default:
 				System.out.println("Opção inválida!");
 				break;
 			}
-		} while (opcao != 8);
+		} while (opcao != 10);
 	}
 
 	public void menuAtualizarCliente(int id) {

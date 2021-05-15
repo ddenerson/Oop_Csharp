@@ -11,6 +11,9 @@ public class SaidaProdutoDAO {
 
 		SaidaProduto sP1 = new SaidaProduto(1, produto[0], 10, 150, fornecedor[0], LocalDate.now(), LocalDate.now());
 		SaidaProduto sP2 = new SaidaProduto(2, produto[1], 15, 200, fornecedor[1], LocalDate.now(), LocalDate.now());
+		
+		this.insereSaidaProduto(sP1);
+		this.insereSaidaProduto(sP2);
 
 	}
 
@@ -32,6 +35,7 @@ public class SaidaProdutoDAO {
 		if (posicao == -1) {
 			return false;
 		}
+		novaSaidaProduto.setId(posicao+1);
 		this.saidaProdutos[posicao] = novaSaidaProduto;
 		return true;
 
@@ -49,7 +53,7 @@ public class SaidaProdutoDAO {
 	public boolean deletaSaidaProduto(SaidaProduto SaidaprodutoASerExcluido) {
 		int posicaoSaidaProduto = encontraSaidaProduto(SaidaprodutoASerExcluido);
 
-		if (posicaoSaidaProduto == -1 || posicaoSaidaProduto == 0) {
+		if (posicaoSaidaProduto == -1) {
 			return false;
 		}
 

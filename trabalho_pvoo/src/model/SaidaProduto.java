@@ -18,6 +18,18 @@ public class SaidaProduto {
 		this.id = id;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public SaidaProduto(Produto produto, int quantidade, double valor_unitario, Fornecedor fornecedor,
+			LocalDate dataCriaca, LocalDate dataModificado) {
+		super();
+		this.produto = produto;
+		this.quantidade = quantidade;
+		this.valor_unitario = valor_unitario;
+		this.fornecedor = fornecedor;
+		this.dataCriacao = dataCriaca;
+		this.dataModificado = dataModificado;
+	}
+
 
 	public SaidaProduto(int id, Produto produto, int quantidade, double valor_unitario, Fornecedor fornecedor,
 			LocalDate dataCriaca, LocalDate dataModificado) {
@@ -86,5 +98,35 @@ public class SaidaProduto {
 	public void setData_modificado(LocalDate data_modificado) {
 		this.dataModificado = data_modificado;
 	}
+
+	@Override
+	public String toString() {
+		return "SaidaProduto [id=" + id + ", produto=" + produto + ", quantidade=" + quantidade + ", valor_unitario="
+				+ valor_unitario + ", fornecedor=" + fornecedor + ", dataCriacao=" + dataCriacao + ", dataModificado="
+				+ dataModificado + "]\n";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SaidaProduto other = (SaidaProduto) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
 
 }

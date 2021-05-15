@@ -11,6 +11,8 @@ public class EntradaProdutoDAO {
 		
 		EntradaProduto entrProd1 = new EntradaProduto(1,produto[0],15,1500,fornecedor[0],LocalDate.now(),LocalDate.now());
 		EntradaProduto entrProd2 = new EntradaProduto(1,produto[0],15,1500,fornecedor[0],LocalDate.now(),LocalDate.now());
+		this.insereEntradaProduto(entrProd1);
+		this.insereEntradaProduto(entrProd2);
 	}
 	
 	public int verificaPosicao() {
@@ -69,7 +71,7 @@ public class EntradaProdutoDAO {
 		public boolean deletaEntradaProduto(EntradaProduto entradaProdASerExcluido) {
 			   int posicaoEntradaProduto = encontrarEntradaProduto(entradaProdASerExcluido);
 
-			   if (posicaoEntradaProduto == -1 || posicaoEntradaProduto == 0) {
+			   if (posicaoEntradaProduto == -1) {
 						return false;
 					}
 
@@ -92,5 +94,7 @@ public class EntradaProdutoDAO {
 
 			return listaEntradaProduto;
 		}
+		
+		
 		
 }
