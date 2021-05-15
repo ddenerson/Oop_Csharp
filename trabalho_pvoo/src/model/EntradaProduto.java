@@ -72,7 +72,7 @@ public class EntradaProduto {
 		return valorUnitario;
 	}
 
-	public void setValor_unitario(int valor_unitario) {
+	public void setValor_unitario(double valor_unitario) {
 		this.valorUnitario = valor_unitario;
 	}
 

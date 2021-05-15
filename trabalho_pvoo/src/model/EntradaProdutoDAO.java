@@ -95,6 +95,33 @@ public class EntradaProdutoDAO {
 			return listaEntradaProduto;
 		}
 		
+		// Recebe um objeto do tipo EntradaProduto contendo o id e as informações que serão
+		// atualizadas
+		public boolean atualizaEntradaProduto(EntradaProduto ep) {
+
+			// É realizada a busca pela SaidaProduto que será atualizado
+			EntradaProduto EntradaProduto = this.buscaEntradaProduto(ep.getId());
+
+			// É verificado quais informações foram preenchidas para atualizar
+			if (ep.getProduto() != null) {
+				EntradaProduto.setProduto(ep.getProduto());
+			}
+			if (ep.getQuantidade() != 0) {
+				EntradaProduto.setQuantidade(ep.getQuantidade());
+			}
+			if (ep.getValor_unitario() != 0.0d) {
+				EntradaProduto.setValor_unitario(ep.getValor_unitario());
+			}
+			if (ep.getFornecedor() != null) {
+				EntradaProduto.setFornecedor(ep.getFornecedor());
+			}
+
+			// atualiza a data de modificação para o momento em que é atualizada
+			EntradaProduto.setData_modificacao(LocalDate.now());
+
+			return true;
+		}
+		
 		
 		
 }
