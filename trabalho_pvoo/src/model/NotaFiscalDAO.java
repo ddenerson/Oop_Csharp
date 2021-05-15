@@ -12,6 +12,10 @@ public class NotaFiscalDAO {
 		
 		NotaFiscal nF1 = new NotaFiscal(1,15000,"preta com azul","pequena",LocalDate.now(), LocalDate.now());
 		NotaFiscal nF2 = new NotaFiscal(2,15025,"verde","grande",LocalDate.now(),LocalDate.now());
+		
+		this.insereNotaFiscal(nF1);
+		this.insereNotaFiscal(nF2);
+
 	}
 	
 	
@@ -33,6 +37,7 @@ public class NotaFiscalDAO {
 		if (posicao == -1) {
 			return false;
 		}
+		novaNotaFiscal.setId(posicao + 1);
 		this.ntFiscal[posicao] = novaNotaFiscal;
 		return true;
 
@@ -47,10 +52,23 @@ public class NotaFiscalDAO {
 		return -1;
 	}
 	
+	public NotaFiscal buscaNotaFiscal(int id) {
+		NotaFiscal notaFiscal = new NotaFiscal(id);
+		int pos = encontrarNotaFiscal(notaFiscal);
+		
+		if (pos != -1) {
+			return this.ntFiscal[pos];
+		}
+		
+		return null;
+	}
+	
+	
+	
 	public boolean deletaNotaFiscal(NotaFiscal notaASerExcluido) {
 		int posicaoNotaFiscal = encontrarNotaFiscal(notaASerExcluido);
 
-		if (posicaoNotaFiscal == -1 || posicaoNotaFiscal == 0) {
+		if (posicaoNotaFiscal == -1) {
 			return false;
 		}
 

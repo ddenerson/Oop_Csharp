@@ -63,7 +63,7 @@ public class UsuarioDAO {
 		public boolean deletaUsuario(Usuario usuarioASerExcluido) {
 			int posicaoUsuario = encontrarUsuario(usuarioASerExcluido);
 
-			if (posicaoUsuario == -1 || posicaoUsuario == 0) {
+			if (posicaoUsuario == -1) {
 				return false;
 			}
 

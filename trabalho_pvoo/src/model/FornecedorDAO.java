@@ -63,7 +63,7 @@ public class FornecedorDAO {
 	public boolean deletaFornecedor(Fornecedor fornecedorASerExcluido) {
 		int posicaoFornecedor = encontrarFornecedor(fornecedorASerExcluido);
 
-		if (posicaoFornecedor == -1 || posicaoFornecedor == 0) {
+		if (posicaoFornecedor == -1) {
 			return false;
 		}
 

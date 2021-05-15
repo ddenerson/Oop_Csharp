@@ -119,7 +119,7 @@ public class ClienteDAO {
 	public boolean deletaCliente(Cliente clienteASerExcluido) {
 		int posicaoCliente = encontrarCliente(clienteASerExcluido);
 
-		if (posicaoCliente == -1 || posicaoCliente == 0) {
+		if (posicaoCliente == -1 ) {
 			return false;
 		}
 

@@ -10,6 +10,8 @@ import model.Estoque;
 import model.EstoqueDAO;
 import model.Fornecedor;
 import model.FornecedorDAO;
+import model.NotaFiscal;
+import model.NotaFiscalDAO;
 import model.OrdemServico;
 import model.OrdemServicoDAO;
 import model.Produto;
@@ -29,6 +31,7 @@ public class Main {
 	EntradaProdutoDAO entradaProdutoDAO = new EntradaProdutoDAO(produtoDAO.getProduto(), fornecedorDAO.getFornecedor());
 	EstoqueDAO estoqueDAO = new EstoqueDAO(produtoDAO.getProduto());
 	SaidaProdutoDAO saidaProdutoDAO = new SaidaProdutoDAO(produtoDAO.getProduto(), fornecedorDAO.getFornecedor());
+	NotaFiscalDAO notaFiscalDAO = new NotaFiscalDAO();
 
 	public Main() {
 		menuPrincipal();
@@ -258,7 +261,7 @@ public class Main {
 				String estado = JOptionPane.showInputDialog("Estado: ");
 				int clienteId = Integer.parseInt(JOptionPane.showInputDialog("Número do cliente: "));
 				Cliente cliente = clienteDAO.buscaCliente(clienteId);
-				double valor = Integer.parseInt(JOptionPane.showInputDialog("Valor: "));
+				double valor = Double.parseDouble(JOptionPane.showInputDialog("Valor: "));
 				String mecanico = JOptionPane.showInputDialog("Mecânico: ");
 				LocalDate dataCriacaoOS = LocalDate.now();
 				LocalDate dataModificacaoOS = LocalDate.now();
@@ -541,9 +544,9 @@ public class Main {
 				boolean resultado = entradaProdutoDAO.insereEntradaProduto(novoEntradaProduto);
 
 				if (resultado) {
-					System.out.println("Usuario cadastrado com sucesso!");
+					System.out.println("Entrada de produto cadastrado com sucesso!");
 				} else {
-					System.out.println("Não foi possível cadastrar o usuario!");
+					System.out.println("Não foi possível cadastrar entrada de produto!");
 				}
 				break;
 			case 2:
@@ -568,9 +571,9 @@ public class Main {
 				EntradaProduto entradaProdutoDeleta = new EntradaProduto(idDeleta);
 				boolean resultadoDeleta = entradaProdutoDAO.deletaEntradaProduto(entradaProdutoDeleta);
 				if (resultadoDeleta) {
-					System.out.println("Usuario deletado com sucesso!");
+					System.out.println(" deletado com sucesso!");
 				} else {
-					System.out.println("Não foi possível deletar o usuario!");
+					System.out.println("Não foi possível deletar !");
 				}
 				break;
 			case 6:
@@ -736,9 +739,9 @@ public class Main {
 				boolean resultadoDeleta = saidaProdutoDAO.deletaSaidaProduto(saidaProdutoDeleta);
 
 				if (resultadoDeleta) {
-					System.out.println("Usuario deletado com sucesso!");
+					System.out.println("Deletado com sucesso!");
 				} else {
-					System.out.println("Não foi possível deletar o usuario!");
+					System.out.println("Não foi possível deletar!");
 				}
 				break;
 			case 6:
@@ -774,6 +777,62 @@ public class Main {
 			opcao = Integer.parseInt(JOptionPane.showInputDialog("Digite a opção desejada: "));
 
 			switch (opcao) {
+			
+			case 1:
+				
+							System.out.println("-- NOVA NOTA FISCAL -- \n");
+							int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id do produto: "));
+							double valorTotal = Double.parseDouble(JOptionPane.showInputDialog("Valor total: "));
+							String descricao = JOptionPane.showInputDialog("Descrição: ");
+							String tipo = JOptionPane.showInputDialog("Tipo: ");
+							LocalDate dataCriacaoNF = LocalDate.now();
+							LocalDate dataModificacaoNF = LocalDate.now();
+							
+							NotaFiscal novaNotaFiscal = new NotaFiscal(id,valorTotal,descricao,tipo,dataCriacaoNF,dataModificacaoNF);
+							
+							boolean resultado = notaFiscalDAO.insereNotaFiscal(novaNotaFiscal);
+							
+							if (resultado) {
+								System.out.println("Nota Fiscal criada com sucesso!");
+							} else {
+								System.out.println("Não foi possível criar nota fiscal.");
+							}
+							break;
+			case 2:
+						System.out.println("-- CONSULTAR NOTA FISCAL -- \n");
+						
+						id = Integer.parseInt(JOptionPane.showInputDialog("Digite o id da nota fiscal: "));
+						NotaFiscal encontrarNotaFiscal = notaFiscalDAO.buscaNotaFiscal(id);
+						System.out.println(encontrarNotaFiscal);
+				break;
+			case 3:
+						System.out.println("-- LISTAR NOTAS FISCAIS -- \n");
+						String listaNF = notaFiscalDAO.listarTodasNotaFiscais();
+						System.out.println(listaNF);
+				break;
+			case 4:
+				System.out.println("-- ATUALIZAR NOTA FISCAL -- \n");
+				int idNF = Integer.parseInt(JOptionPane.showInputDialog("Digite o id da Nota Fiscal: "));
+				break;
+			case 5:
+				System.out.println("-- REMOVER NOTA FISCAL -- \n");
+				int idDeleta = Integer.parseInt(JOptionPane.showInputDialog("Digite o id da nota fiscal: "));
+				NotaFiscal notaFiscal = new NotaFiscal(idDeleta);
+				
+				boolean resultadoDeleta = notaFiscalDAO.deletaNotaFiscal(notaFiscal);
+				
+				if (resultadoDeleta) {
+					System.out.println("Nota Fiscal excluída com sucesso!");
+				}else {
+					System.out.println("Não foi possível excluir a nota fiscal !");
+				}
+				break;
+			case 6:
+				System.out.println("Retorna ao menu principal");
+				break;
+			default:
+				System.out.println("Opção inválida!");
+				break;
 
 			}
 
@@ -823,6 +882,7 @@ public class Main {
 				menuEstoque();
 				break;
 			case 6:
+				menuNotaFiscal();
 				break;
 			case 7:
 				menuOrdemServico();

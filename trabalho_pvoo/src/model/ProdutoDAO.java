@@ -74,7 +74,7 @@ public class ProdutoDAO {
 	public boolean deletaProduto(Produto produtoASerExcluido) {
 		int posicaoProduto = encontrarProduto(produtoASerExcluido);
 
-		if (posicaoProduto == -1 || posicaoProduto == 0) {
+		if (posicaoProduto == -1) {
 			return false;
 		}
 
