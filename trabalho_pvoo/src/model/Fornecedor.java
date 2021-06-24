@@ -1,7 +1,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Fornecedor {
 	private int id;
@@ -10,7 +9,7 @@ public class Fornecedor {
 	private String cnpj;
 	private int estoqueMaximo;
 	private LocalDate dataCriacao;
-	private LocalDate dataModificado;
+	private LocalDate dataModificacao;
 
 	public Fornecedor(int id) {
 		super();
@@ -18,18 +17,18 @@ public class Fornecedor {
 	}
 
 	public Fornecedor(String nome, String telefone, String cnpj, int estoqueMaximo, LocalDate dataCriacao,
-			LocalDate dataModificado) {
+			LocalDate dataModificacao) {
 		super();
 		this.nome = nome;
 		this.telefone = telefone;
 		this.cnpj = cnpj;
 		this.estoqueMaximo = estoqueMaximo;
 		this.dataCriacao = dataCriacao;
-		this.dataModificado = dataModificado;
+		this.dataModificacao = dataModificacao;
 	}
 
 	public Fornecedor(int id, String nome, String telefone, String cnpj, int estoqueMaximo, LocalDate dataCriacao,
-			LocalDate dataModificado) {
+			LocalDate dataModificacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -37,7 +36,7 @@ public class Fornecedor {
 		this.cnpj = cnpj;
 		this.estoqueMaximo = estoqueMaximo;
 		this.dataCriacao = dataCriacao;
-		this.dataModificado = dataModificado;
+		this.dataModificacao = dataModificacao;
 	}
 
 	public int getId() {
@@ -88,19 +87,19 @@ public class Fornecedor {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public LocalDate getDataModificado() {
-		return dataModificado;
+	public LocalDate getDataModificacao() {
+		return dataModificacao;
 	}
 
-	public void setDataModificado(LocalDate dataModificado) {
-		this.dataModificado = dataModificado;
+	public void setDataModificacao(LocalDate dataModificacao) {
+		this.dataModificacao = dataModificacao;
 	}
 
 	@Override
 	public String toString() {
 		return "Fornecedor [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", cnpj=" + cnpj
 				+ ", estoqueMaximo=" + estoqueMaximo + ", dataCriacao=" + dataCriacao + ", dataModificado="
-				+ dataModificado + "]\n";
+				+ dataModificacao + "]\n";
 	}
 
 	@Override

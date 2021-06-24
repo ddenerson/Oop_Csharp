@@ -18,24 +18,24 @@ public class Estoque {
 		this.id = id;
 	}
 	
-	public Estoque(Produto produto, int quantidade, double valor_unitario, LocalDate dataCriação,
+	public Estoque(Produto produto, int quantidade, double valor_unitario, LocalDate dataCriacao,
 			LocalDate dataModificado) {
 		super();
 		this.produto = produto;
 		this.quantidade = quantidade;
 		this.valor_unitario = valor_unitario;
-		this.dataCriacao = dataCriação;
+		this.dataCriacao = dataCriacao;
 		this.dataModificado = dataModificado;
 	}	
 
-	public Estoque(int id, Produto produto, int quantidade, double valor_unitario, LocalDate dataCriação,
+	public Estoque(int id, Produto produto, int quantidade, double valor_unitario, LocalDate dataCriacao,
 			LocalDate dataModificado) {
 		super();
 		this.id = id;
 		this.produto = produto;
 		this.quantidade = quantidade;
 		this.valor_unitario = valor_unitario;
-		this.dataCriacao = dataCriação;
+		this.dataCriacao = dataCriacao;
 		this.dataModificado = dataModificado;
 	}
 

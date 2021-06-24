@@ -1,160 +1,155 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import database.ConnectionFactory;
 
 public class ClienteDAO {
 
-	Cliente[] clientes = new Cliente[50];
-	int contador;
+	// Insere um novo cliente.Se existe um espaï¿½o vazio entre 2 cliente,
+	// Entï¿½o o novo cliente serï¿½ criado nessa posiï¿½ï¿½o
+	public int insereCliente(Cliente c) {
 
-	public ClienteDAO() {
-		Cliente cl1 = new Cliente(1, "Denerson", "ANTONIO ALVES", "10543213617", "34984137603", LocalDate.now(),
-				LocalDate.now());
-		Cliente cl2 = new Cliente(2, "Alex", "ANTONIO ALVES DUTRA", "105432136", "984137603", LocalDate.now(),
-				LocalDate.now());
-		Cliente cl3 = new Cliente(3, "Denerson", "ANTONIO ALVES", "10543213617", "34984137603", LocalDate.now(),
-				LocalDate.now());
-		Cliente cl4 = new Cliente(4, "Alex", "ANTONIO ALVES DUTRA", "105432136", "984137603", LocalDate.now(),
-				LocalDate.now());
-		Cliente cl5 = new Cliente(5, "Denerson", "ANTONIO ALVES", "10543213617", "34984137603", LocalDate.now(),
-				LocalDate.now());
-		Cliente cl6 = new Cliente(6, "Alex", "ANTONIO ALVES DUTRA", "105432136", "984137603", LocalDate.now(),
-				LocalDate.now());
-		Cliente cl7 = new Cliente(7, "Denerson", "ANTONIO ALVES", "10543213617", "34984137603", LocalDate.now(),
-				LocalDate.now());
-		Cliente cl8 = new Cliente(8, "Alex", "ANTONIO ALVES DUTRA", "105432136", "984137603", LocalDate.now(),
-				LocalDate.now());
-		Cliente cl9 = new Cliente(9, "Denerson", "ANTONIO ALVES", "10543213617", "34984137603", LocalDate.now(),
-				LocalDate.now());
-		Cliente cl0 = new Cliente(10, "Alex", "ANTONIO ALVES DUTRA", "105432136", "984137603", LocalDate.now(),
-				LocalDate.now());
-		
-		this.insereCliente(cl1);
-		this.insereCliente(cl2);
-		this.insereCliente(cl3);
-		this.insereCliente(cl4);
-		this.insereCliente(cl5);
-		this.insereCliente(cl6);
-		this.insereCliente(cl7);
-		this.insereCliente(cl8);
-		this.insereCliente(cl9);
-		this.insereCliente(cl0);
-	}
+		int resultado = 0;
 
-	public int verificaPosicao() {
-		contador = 0;
+		String insert = "INSERT INTO cliente" + "(nome, endereco, cpf, telefone, dataCriacao, dataModificacao)"
+				+ "VALUES(?,?,?,?,?,?)";
 
-		for (int i = 0; i < clientes.length; i++) {
-			if (clientes[i] == null) {
-				return i;
-			}
-			contador++;
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(insert)) {
+
+			stmt.setString(1, c.getNome());
+			stmt.setString(2, c.getEndereco());
+			stmt.setString(3, c.getCpf());
+			stmt.setString(4, c.getTelefone());
+			stmt.setDate(5, Date.valueOf(c.getDataCriacao()));
+			stmt.setDate(6, Date.valueOf(c.getDataModificacao()));
+
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
 		}
 
-		return -1;
+		return resultado;
 	}
 
-	// Insere um novo cliente.Se existe um espaço vazio entre 2 cliente,
-	// Então o novo cliente será criado nessa posição
-	public boolean insereCliente(Cliente novoCliente) {
-
-		int posicao = verificaPosicao();
-		if (posicao == -1) {
-			return false;
-		}
-		novoCliente.setId(posicao + 1);
-		this.clientes[posicao] = novoCliente;
-		return true;
-
-	}
-
-	// Encontra a posição do cliente
-	public int encontrarCliente(Cliente clienteASerExcluido) {
-		for (int i = 0; clientes.length > i; i++) {
-			if (clientes[i] != null && clientes[i].equals(clienteASerExcluido)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	// Busca cliente
+	// Realiza a busca pelo cliente usando o id e retorna um objeto
+	// Cliente com os dados encontrados
 	public Cliente buscaCliente(int id) {
-		Cliente clienteBusca = new Cliente(id);
-		int pos = encontrarCliente(clienteBusca);
-		
-		if (pos != -1) {
-			System.out.println(this.clientes[pos]);
-			return this.clientes[pos];
-		}
-		
-		return null;
-	}
-	
-	// Recebe um objeto do tipo cliente contendo o id e as informações que serão atualizadas
-	public boolean atualizaCliente(Cliente c) {
-		
-		// É realizada a busca pelo cliente que será atualizado
-		Cliente clienteBusca = this.buscaCliente(c.getId());
-		// É verificado quais informações foram preenchidas para atualizar
-		if (c.getNome() != null) {
-			clienteBusca.setNome(c.getNome());
-		}
-		if (c.getEndereco() != null) {
-			clienteBusca.setEndereco(c.getEndereco());
-		}
-		if (c.getCpf() != null) {
-			clienteBusca.setCpf(c.getCpf());
-		}
-		if (c.getTelefone() != null) {
-			clienteBusca.setTelefone(c.getTelefone());
-		}
-		// atualiza a data de modificação para o momento em que é atualizada
-		clienteBusca.setDataModificacao(LocalDate.now());
 
-		return true;
+		Cliente cliente = null;
+		String select = "SELECT nome,endereco,cpf,telefone,dataCriacao,dataModificacao FROM cliente WHERE id = ?";
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(select)) {
+
+			stmt.setLong(1, id);
+
+			try (ResultSet rs = stmt.executeQuery()) {
+
+				while (rs.next()) {
+					cliente = new Cliente();
+					cliente.setId(id);
+					cliente.setNome(rs.getString("nome"));
+					cliente.setEndereco(rs.getString("endereco"));
+					cliente.setCpf(rs.getString("cpf"));
+					cliente.setTelefone(rs.getString("telefone"));
+					cliente.setDataCriacao(rs.getDate("dataCriacao").toLocalDate());
+					cliente.setDataModificacao(rs.getDate("dataModificacao").toLocalDate());
+				}
+				rs.close();
+			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
+		}
+
+		return cliente;
 	}
 
-	// Recebe um cliente como parâmetro e "exclui" - null
-	public boolean deletaCliente(Cliente clienteASerExcluido) {
-		int posicaoCliente = encontrarCliente(clienteASerExcluido);
+	// Recebe um objeto do tipo cliente contendo o id e as informaï¿½ï¿½es que serï¿½o
+	// atualizadas
+	public int atualizaCliente(Cliente c) {
 
-		if (posicaoCliente == -1 ) {
-			return false;
+		String update = "update cliente set nome = ?, endereco = ?, cpf = ?, telefone = ?, dataCriacao = ?, dataModificacao = ? where id = ?";
+		int resultado = 0;
+		
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(update)) {
+			stmt.setString(1, c.getNome());
+			stmt.setString(2, c.getEndereco());
+			stmt.setString(3, c.getCpf());
+			stmt.setString(4, c.getTelefone());
+			stmt.setDate(5, Date.valueOf(c.getDataCriacao()));
+			stmt.setDate(6, Date.valueOf(c.getDataModificacao()));
+			stmt.setLong(7, c.getId());
+
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
 		}
-
-		clientes[posicaoCliente] = null;
-		return true;
+		
+		return resultado;
 	}
 
-	// Lista um único cliente
-	public String listarCliente(Cliente c) {
-		if (encontrarCliente(c) != -1) {
-			return clientes[encontrarCliente(c)].toString();
+	// Recebe o id do cliente e o exclui do banco de dados
+	public int deletaCliente(int id) {
+		String delete = "DELETE FROM cliente WHERE id = ?";
+		int resultado = 0;
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(delete)) {
+
+			stmt.setLong(1, id);
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
 		}
-		return "Não encontrado.";
+
+		return resultado;
 	}
 
 	// Lista todos os clientes cadastrados
-	public String listarTodosClientes() {
+	public List<Cliente> listarClientes() {
 
-		String listaClientes = "-- Clientes -- " + "\n";
+		List<Cliente> clientes = new ArrayList<Cliente>();
 
-		for (int i = 0; clientes.length > i; i++) {
-			if (clientes[i] != null) {
-				listaClientes += clientes[i].toString() + "\n";
+		String select = "SELECT id,nome,endereco,cpf,telefone,dataCriacao,dataModificacao FROM cliente";
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(select)) {
+
+			try (ResultSet rs = stmt.executeQuery()) {
+
+				while (rs.next()) {
+					Cliente cliente = new Cliente(rs.getInt("id"), rs.getString("nome"), rs.getString("endereco"),
+							rs.getString("cpf"), rs.getString("telefone"), rs.getDate("dataCriacao").toLocalDate(),
+							rs.getDate("dataModificacao").toLocalDate());
+
+					clientes.add(cliente);
+				}
+
 			}
-		}
-		if (listaClientes.contentEquals("-- Clientes -- " + "\n")) {
-			listaClientes = "Nenhum cliente cdadastrado.";
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
 		}
 
-		return listaClientes;
+		return clientes;
 	}
 
 	public Cliente[] getClientes() {
-		return clientes;
+		return null;
 	}
-	
 
 }

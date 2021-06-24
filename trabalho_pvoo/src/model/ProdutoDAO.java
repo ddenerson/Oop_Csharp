@@ -1,138 +1,155 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import database.ConnectionFactory;
 
 public class ProdutoDAO {
 
-	Produto[] produtos = new Produto[50];
-	int contador;
+	// Insere um produto no banco de dados
+	public int insereProduto(Produto p) {
 
-	public ProdutoDAO() {
+		int resultado = 0;
 
-		Produto p1 = new Produto(1, "ATIVO", "TELEFONE CELULAR", 10, 100, LocalDate.now(), LocalDate.now());
-		Produto p2 = new Produto(2, "INATIVO", "IPHONE", 5, 50, LocalDate.now(), LocalDate.now());
-		this.insereProduto(p1);
-		this.insereProduto(p2);
-	}
+		String insert = "INSERT INTO produto"
+				+ "(status, descricao, estoqueMin, estoqueMax, dataCriacao, dataModificacao)" + "VALUES(?,?,?,?,?,?)";
 
-	// Encontra uma posição está vazia
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(insert)) {
 
-	public int verificaPosicao() {
+			stmt.setString(1, p.getStatus());
+			stmt.setString(2, p.getDescricao());
+			stmt.setInt(3, p.getEstoqueMinimo());
+			stmt.setInt(4, p.getEstoqueMaximo());
+			stmt.setDate(5, Date.valueOf(p.getDataCriacao()));
+			stmt.setDate(6, Date.valueOf(p.getDataModificacao()));
 
-		for (int i = 0; i < produtos.length; i++) {
-			if (produtos[i] == null) {
-				return i;
-			}
-			contador++;
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
 
-		return -1;
-	}
-
-	// Insere um novo Produto.Se existe um espaço vazio entre 2 produtos,
-	// Então o novo produto será criado nessa posição
-
-	public boolean insereProduto(Produto novoProduto) {
-
-		int posicao = verificaPosicao();
-		if (posicao == -1) {
-			return false;
-		}
-		novoProduto.setId(posicao + 1);
-		this.produtos[posicao] = novoProduto;
-		return true;
+		return resultado;
 
 	}
-	
+
+	// Realiza a busca pelo produto usando o id e retorna um objeto
+	// Produto com os dados encontrados
 	public Produto buscaProduto(int id) {
-		Produto produtoBusca = new Produto(id);
-		int pos = encontrarProduto(produtoBusca);
-		
-		if (pos != -1) {
-			return this.produtos[pos];
-		}
-		
-		return null;
-	}
-	
-	
-	
 
-//Encontra a posição do produto
+		Produto produto = null;
+		String select = "SELECT status, descricao, estoqueMin, estoqueMax, dataCriacao, dataModificacao FROM produto WHERE id = ?";
 
-	public int encontrarProduto(Produto produtoBusca) {
-		for (int i = 0; produtos.length > i; i++) {
-			if (produtos[i] != null && produtos[i].equals(produtoBusca)) {
-				return i;
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(select)) {
+
+			stmt.setLong(1, id);
+
+			try (ResultSet rs = stmt.executeQuery()) {
+
+				while (rs.next()) {
+					produto = new Produto(id);
+					produto.setStatus(rs.getString("status"));
+					produto.setDescricao(rs.getString("descricao"));
+					produto.setEstoqueMinimo(rs.getInt("estoqueMin"));
+					produto.setEstoqueMaximo(rs.getInt("estoqueMax"));
+					produto.setDataCriacao(rs.getDate("dataCriacao").toLocalDate());
+					produto.setDataModificacao(rs.getDate("dataModificacao").toLocalDate());
+				}
+				rs.close();
 			}
-		}
-		return -1;
-	}
 
-//Recebe um produto como parâmetro e "exclui" - null
-
-	public boolean deletaProduto(Produto produtoASerExcluido) {
-		int posicaoProduto = encontrarProduto(produtoASerExcluido);
-
-		if (posicaoProduto == -1) {
-			return false;
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
 		}
 
-		produtos[posicaoProduto] = null;
-		return true;
+		return produto;
 	}
 
-	public String listarProduto(Produto c) {
-		if (encontrarProduto(c) != -1) {
-			return produtos[encontrarProduto(c)].toString();
+	// Recebe um objeto do tipo produto contendo o id e as informaï¿½ï¿½es que serï¿½o
+	// atualizadas
+	public int atualizaProduto(Produto p) {
+
+		String update = "UPDATE produto SET status = ?, descricao = ?, estoqueMin = ?, estoqueMax = ?, dataCriacao = ?, dataModificacao = ? WHERE id = ?";
+		int resultado = 0;
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(update)) {
+
+			stmt.setString(1, p.getStatus());
+			stmt.setString(2, p.getDescricao());
+			stmt.setInt(3, p.getEstoqueMinimo());
+			stmt.setInt(4, p.getEstoqueMaximo());
+			stmt.setDate(5, Date.valueOf(p.getDataCriacao()));
+			stmt.setDate(6, Date.valueOf(p.getDataModificacao()));
+			stmt.setInt(7, p.getId());
+
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
-		return "Não encontrado.";
+		return resultado;
 	}
 
-	//Funcional
-	
-	public String listarTodosProdutos() {
+	// Recebe o id do produto e o exclui do banco de dados
+	public int deletaProduto(int id) {
+		String delete = "DELETE FROM produto WHERE id = ?";
+		int resultado = 0;
 
-		String listaProduto = "-- Produto -- " + "\n";
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(delete)) {
 
-		for (int i = 0; produtos.length > i; i++) {
-			if (produtos[i] != null) {
-				listaProduto += produtos[i].toString();
-			}
+			stmt.setLong(1, id);
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
 		}
-		if (listaProduto.contentEquals("-- Produto -- " + "\n")) {
-			listaProduto = "Nenhum produto cadastrado.";
-		}
 
-		return listaProduto;
-	}
-	
-	// Recebe um objeto do tipo Produto contendo o id e as informações que serão atualizadas
-		public boolean atualizaProduto(Produto p) {
-			
-			// É realizada a busca pelo Produto que será atualizado
-			Produto produto = this.buscaProduto(p.getId());
-			// É verificado quais informações foram preenchidas para atualizar
-			if (p.getStatus() != null) {
-				produto.setStatus(p.getStatus());
-			}
-			if (p.getDescricao() != null) {
-				produto.setDescricao(p.getDescricao());
-			}
-			if (p.getEstoque_minimo() != 0) {
-				produto.setEstoque_minimo(p.getEstoque_minimo());
-			}
-			if (p.getEstoque_maximo() != 0) {
-				produto.setEstoque_maximo(p.getEstoque_maximo());
-			}
-			// atualiza a data de modificação para o momento em que é atualizada
-			produto.setData_modificacao(LocalDate.now());
-
-			return true;
-		}
-	
-	public Produto[] getProduto() {
-		return produtos;
+		return resultado;
 	}
 
+	// Lista todos os produtos cadastrados
+	public List<Produto> listarProdutos() {
+
+			List<Produto> produtos = null;
+
+			String select = "SELECT id, status, descricao, estoqueMin, estoqueMax, dataCriacao, dataModificacao FROM produto";
+
+			try (Connection connection = new ConnectionFactory().getConnection();
+					PreparedStatement stmt = connection.prepareStatement(select)) {
+
+				try (ResultSet rs = stmt.executeQuery()) {
+					produtos = new ArrayList<Produto>();
+					while (rs.next()) {
+						
+						Produto produto = new Produto(
+						rs.getInt("id"),
+						rs.getString("status"),
+						rs.getString("descricao"),
+						rs.getInt("estoqueMin"),
+						rs.getInt("estoqueMax"),
+						rs.getDate("dataCriacao").toLocalDate(),
+						rs.getDate("dataModificacao").toLocalDate());
+						
+						produtos.add(produto);
+					}
+					rs.close();
+				}
+
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+
+			return produtos;
+		}
 }

@@ -1,127 +1,149 @@
 package model;
 
-import java.time.LocalDate;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import database.ConnectionFactory;
 
 public class FornecedorDAO {
 
-	Fornecedor[] fornecedor = new Fornecedor[50];
-	int contador;
-
-	public FornecedorDAO() {
-		Fornecedor fr1 = new Fornecedor(1, "Luiz", "3433141622", "01585368525", 10, LocalDate.now(), LocalDate.now());
-		this.insereFornecedor(fr1);
-	}
-
-	public int verificaPosicao() {
-
-		for (int i = 0; i < fornecedor.length; i++) {
-			if (fornecedor[i] == null) {
-				return i;
-			}
-			contador++;
-		}
-
-		return -1;
-	}
-
-	// Insere um novo Produto.Se existe um espaço vazio entre 2 produtos,
-	// Então o novo produto será criado nessa posição
-	public boolean insereFornecedor(Fornecedor novoFornecedor) {
-
-		int posicao = verificaPosicao();
-		if (posicao == -1) {
-			return false;
-		}
-		novoFornecedor.setId(posicao + 1);
-		this.fornecedor[posicao] = novoFornecedor;
-		return true;
-
-	}
-
-	// Encontra a posição do produto
-	public int encontrarFornecedor(Fornecedor fornecedorASerExcluido) {
-		for (int i = 0; fornecedor.length > i; i++) {
-			if (fornecedor[i] != null && fornecedor[i].equals(fornecedorASerExcluido)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public Fornecedor buscaFornecedor(int id) {
-		Fornecedor fornecedorBusca = new Fornecedor(id);
-		int pos = encontrarFornecedor(fornecedorBusca);
-
-		if (pos != -1) {
-			return this.fornecedor[pos];
-		}
-
-		return null;
-	}
-
-	// Recebe um produto como parâmetro e "exclui" - null
-	public boolean deletaFornecedor(Fornecedor fornecedorASerExcluido) {
-		int posicaoFornecedor = encontrarFornecedor(fornecedorASerExcluido);
-
-		if (posicaoFornecedor == -1) {
-			return false;
-		}
-
-		fornecedor[posicaoFornecedor] = null;
-		return true;
-	}
-
-	public String listarFornecedor(Fornecedor c) {
-		if (encontrarFornecedor(c) != -1) {
-			return fornecedor[encontrarFornecedor(c)].toString();
-		}
-		return "Não encontrado.";
-	}
-
-	// Funcional
-
-	public String listarTodosFornecedor() {
-
-		String listaClientes = "-- Fornecedores -- " + "\n";
-
-		for (int i = 0; fornecedor.length > i; i++) {
-			if (fornecedor[i] != null) {
-				listaClientes += fornecedor[i].toString();
-			}
-		}
-		if (listaClientes.contentEquals("-- Fornecedor -- " + "\n")) {
-			listaClientes = "Nenhum produto usuarios.";
-		}
-
-		return listaClientes;
-	}
-	
-	// Recebe um objeto do tipo Fornecedor contendo o id e as informações que serão atualizadas
-	public boolean atualizaFornecedor(Fornecedor f) {
-
-		// É realizada a busca pelo Fornecedor que será atualizado
-		Fornecedor fornecedor = this.buscaFornecedor(f.getId());
+	// Insere um novo fornecedor no banco de dados
+	public int insereFornecedor(Fornecedor f) {
 		
-		// É verificado quais informações foram preenchidas para atualizar
-		if (f.getNome() != null) {
-			fornecedor.setNome(f.getNome());
-		}
-		if (f.getTelefone() != null) {
-			fornecedor.setTelefone(f.getTelefone());
-		}
-		if (f.getCnpj() != null) {
-			fornecedor.setCnpj(f.getCnpj());
-		}
-		if (f.getEstoqueMaximo() != 0) {
-			fornecedor.setEstoqueMaximo(f.getEstoqueMaximo());
-		}
-		// atualiza a data de modificação para o momento em que é atualizada
-		fornecedor.setDataModificado(LocalDate.now());
+		int resultado = 0;
 
-		return true;
+		String insert = "INSERT INTO fornecedor"
+				+ "(nome, telefone, cnpj, estoqueMax, dataCriacao, dataModificacao)" + "VALUES(?,?,?,?,?,?)";
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(insert)) {
+
+			stmt.setString(1, f.getNome());
+			stmt.setString(2, f.getTelefone());
+			stmt.setString(3, f.getCnpj());
+			stmt.setInt(4, f.getEstoqueMaximo());
+			stmt.setDate(5, Date.valueOf(f.getDataCriacao()));
+			stmt.setDate(6, Date.valueOf(f.getDataModificacao()));
+
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
+		return resultado;
 	}
 
-	public Fornecedor[] getFornecedor() {
+	// Usa o id para buscar os dados do fornecedor e retorna um objeto Fornecedor
+	public Fornecedor buscaFornecedor(int id) {
+		Fornecedor fornecedor = null;
+		String select = "SELECT nome, telefone, cnpj, estoqueMax, dataCriacao, dataModificacao FROM fornecedor WHERE id = ?";
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(select)) {
+
+			stmt.setLong(1, id);
+
+			try (ResultSet rs = stmt.executeQuery()) {
+
+				while (rs.next()) {
+					fornecedor = new Fornecedor(id);
+					fornecedor.setNome(rs.getString("nome"));
+					fornecedor.setTelefone(rs.getString("telefone"));
+					fornecedor.setCnpj(rs.getString("cnpj"));
+					fornecedor.setEstoqueMaximo(rs.getInt("estoqueMax"));
+					fornecedor.setDataCriacao(rs.getDate("dataCriacao").toLocalDate());
+					fornecedor.setDataModificacao(rs.getDate("dataModificacao").toLocalDate());
+				}
+				rs.close();
+			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 		return fornecedor;
 	}
+	
+	// Recebe um objeto do tipo Fornecedor contendo o id e as informaï¿½ï¿½es que serï¿½o atualizadas
+	public int atualizaFornecedor(Fornecedor f) {
+
+		String update = "UPDATE fornecedor SET nome = ?, telefone = ?, cnpj = ?, estoqueMax = ?, dataCriacao = ?, dataModificacao = ? WHERE id = ?";
+		int resultado = 0;
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(update)) {
+
+			stmt.setString(1, f.getNome());
+			stmt.setString(2, f.getTelefone());
+			stmt.setString(3, f.getCnpj());
+			stmt.setInt(4, f.getEstoqueMaximo());
+			stmt.setDate(5, Date.valueOf(f.getDataCriacao()));
+			stmt.setDate(6, Date.valueOf(f.getDataModificacao()));
+			stmt.setInt(7, f.getId());
+
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return resultado;
+	}
+	
+	// Recebe o id do fornecedor e o exclui do banco de dados
+		public int deletaFornecedor(int id) {
+			String delete = "DELETE FROM fornecedor WHERE id = ?";
+			int resultado = 0;
+
+			try (Connection connection = new ConnectionFactory().getConnection();
+					PreparedStatement stmt = connection.prepareStatement(delete)) {
+
+				stmt.setLong(1, id);
+				resultado = stmt.executeUpdate();
+
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+			return resultado;
+		}
+		
+		// Lista todos os fornecedores cadastrados
+		public List<Fornecedor> listarFornecedores() {
+
+				List<Fornecedor> fornecedores = null;
+
+				String select = "SELECT id, nome, telefone, cnpj, estoqueMax, dataCriacao, dataModificacao FROM fornecedor";
+
+				try (Connection connection = new ConnectionFactory().getConnection();
+						PreparedStatement stmt = connection.prepareStatement(select)) {
+
+					try (ResultSet rs = stmt.executeQuery()) {
+						fornecedores = new ArrayList<Fornecedor>();
+						
+						while (rs.next()) {
+							
+							Fornecedor fornecedor = new Fornecedor(
+							rs.getInt("id"),
+							rs.getString("nome"),
+							rs.getString("telefone"),
+							rs.getString("cnpj"),
+							rs.getInt("estoqueMax"),
+							rs.getDate("dataCriacao").toLocalDate(),
+							rs.getDate("dataModificacao").toLocalDate());
+							
+							fornecedores.add(fornecedor);
+						}
+						rs.close();
+					}
+
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+
+				return fornecedores;
+			}
 }
