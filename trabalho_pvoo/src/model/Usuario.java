@@ -15,6 +15,10 @@ public class Usuario {
 	private LocalDate dataCriacao;
 	private LocalDate dataModificacao;
 
+	public Usuario() {
+		super();
+	}
+	
 	public Usuario(int id) {
 		super();
 		this.id = id;

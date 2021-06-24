@@ -18,7 +18,6 @@ public class Produto {
 		this.id = id;
 	}
 
-
 	public Produto(String status, String descricao, int estoque_minimo, int estoque_maximo,
 			LocalDate dataCriacao, LocalDate dataModificacao) {
 		super();
@@ -67,35 +66,35 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
-	public int getEstoque_minimo() {
+	public int getEstoqueMinimo() {
 		return estoqueMinimo;
 	}
 
-	public void setEstoque_minimo(int estoque_minimo) {
+	public void setEstoqueMinimo(int estoque_minimo) {
 		this.estoqueMinimo = estoque_minimo;
 	}
 
-	public int getEstoque_maximo() {
+	public int getEstoqueMaximo() {
 		return estoqueMaximo;
 	}
 
-	public void setEstoque_maximo(int estoque_maximo) {
+	public void setEstoqueMaximo(int estoque_maximo) {
 		this.estoqueMaximo = estoque_maximo;
 	}
 
-	public LocalDate getData_criacao() {
+	public LocalDate getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setData_criacao(LocalDate data_criacao) {
+	public void setDataCriacao(LocalDate data_criacao) {
 		this.dataCriacao = data_criacao;
 	}
 
-	public LocalDate getData_modificacao() {
+	public LocalDate getDataModificacao() {
 		return dataModificacao;
 	}
 
-	public void setData_modificacao(LocalDate data_modificacao) {
+	public void setDataModificacao(LocalDate data_modificacao) {
 		this.dataModificacao = data_modificacao;
 	}
 

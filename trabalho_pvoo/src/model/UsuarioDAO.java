@@ -1,156 +1,161 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import database.ConnectionFactory;
 
 public class UsuarioDAO {
 
-	Usuario[] usuarios = new Usuario[50];
-	int contador;
+	// Insere um novo usuÃ¡rio no banco de dados.
+	public int insereUsuario(Usuario u) {
 
-	public UsuarioDAO() {
+		int resultado = 0;
 
-		Usuario u1 = new Usuario(1, "Denerson", "AV DEZ", "10543213617", "34984137603", "ddenerson", "1234",
-				LocalDate.now(), LocalDate.now());
-		Usuario u2 = new Usuario(2, "Alexssandra", "AV DEZ", "1054321385", "34984137602", "leleca", "5678",
-				LocalDate.now(), LocalDate.now());
-		Usuario u3 = new Usuario(3, "Alexssandra", "AV DEZ", "1054321385", "34984137602", "teste", "910",
-				LocalDate.now(), LocalDate.now());
-		this.insereUsuario(u1);
-		this.insereUsuario(u2);
-		this.insereUsuario(u3);
+		String insert = "INSERT INTO usuario"
+				+ "(nome, endereco, cpf, telefone, dataCriacao, dataModificacao, login, senha)"
+				+ "VALUES(?,?,?,?,?,?,?,?)";
 
-	}
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(insert)) {
 
-	// Encontra uma posição está vazia
+			stmt.setString(1, u.getNome());
+			stmt.setString(2, u.getEndereco());
+			stmt.setString(3, u.getCpf());
+			stmt.setString(4, u.getTelefone());
+			stmt.setDate(5, Date.valueOf(u.getDataCriacao()));
+			stmt.setDate(6, Date.valueOf(u.getDataModificacao()));
+			stmt.setString(7, u.getLogin());
+			stmt.setString(8, u.getSenha());
 
-	public int verificaPosicao() {
+			resultado = stmt.executeUpdate();
 
-		for (int i = 0; i < usuarios.length; i++) {
-			if (usuarios[i] == null) {
-				return i;
-			}
-			contador++;
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
 		}
 
-		return -1;
+		return resultado;
 	}
 
-	// Insere um novo Produto.Se existe um espaço vazio entre 2 produtos,
-	// Então o novo produto será criado nessa posição
-	public boolean insereUsuario(Usuario novoUsuario) {
-
-		int posicao = verificaPosicao();
-		if (posicao == -1) {
-			return false;
-		}
-		novoUsuario.setId(posicao + 1);
-		this.usuarios[posicao] = novoUsuario;
-		return true;
-
-	}
-
-	// Encontra a posição do produto
-	public int encontrarUsuario(Usuario usuarioASerExcluido) {
-		for (int i = 0; usuarios.length > i; i++) {
-			if (usuarios[i] != null && usuarios[i].equals(usuarioASerExcluido)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	// Recebe um produto como parâmetro e "exclui" - null
-
-	public boolean deletaUsuario(Usuario usuarioASerExcluido) {
-		int posicaoUsuario = encontrarUsuario(usuarioASerExcluido);
-
-		if (posicaoUsuario == -1) {
-			return false;
-		}
-
-		usuarios[posicaoUsuario] = null;
-		return true;
-	}
-
-	public String listarUsario(Usuario c) {
-		if (encontrarUsuario(c) != -1) {
-			return usuarios[encontrarUsuario(c)].toString();
-		}
-		return "Não encontrado.";
-	}
-
-	// Funcional
-
-	public String listarTodosUsuarios() {
-
-		String listaUsuarios = "-- Usuarios -- " + "\n";
-
-		for (int i = 0; usuarios.length > i; i++) {
-			if (usuarios[i] != null) {
-				listaUsuarios += usuarios[i].toString();
-			}
-		}
-		if (listaUsuarios.contentEquals("-- Usuarios -- " + "\n")) {
-			listaUsuarios = "Nenhum produto usuarios.";
-		}
-
-		return listaUsuarios;
-	}
-
-	// Busca usuário
+	// Realiza a busca pelo usuÃ¡rio usando o id e retorna um objeto
+	// Usuario com os dados encontrados
 	public Usuario buscaUsuario(int id) {
-		Usuario usuario = new Usuario(id);
-		int pos = encontrarUsuario(usuario);
 
-		if (pos != -1) {
-			return this.usuarios[pos];
-		}
+		Usuario usuario = null;
+		String select = "SELECT nome,endereco,cpf,telefone,dataCriacao,dataModificacao,login,senha FROM usuario WHERE id = ?";
 
-		return null;
-	}
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(select)) {
 
-	// Recebe um objeto do tipo Usuario contendo o id e as informações que serão
-	// atualizadas
-	public boolean atualizaUsuario(Usuario u) {
+			stmt.setLong(1, id);
 
-		// É realizada a busca pelo ususario que será atualizado
-		Usuario usuario = buscaUsuario(u.getId());
-		// É verificado quais informações foram preenchidas para atualizar
-		if (u.getNome() != null) {
-			usuario.setNome(u.getNome());
-		}
-		if (u.getEndereco() != null) {
-			usuario.setEndereco(u.getEndereco());
-		}
-		if (u.getCpf() != null) {
-			usuario.setCpf(u.getCpf());
-		}
-		if (u.getTelefone() != null) {
-			usuario.setTelefone(u.getTelefone());
-		}
-		if (u.getLogin() != null) {
-			usuario.setLogin(u.getLogin());
-		}
-		if (u.getSenha() != null) {
-			usuario.setSenha(u.getSenha());
-		}
-		// atualiza a data de modificação para o momento em que é atualizada
-		usuario.setDataModificacao(LocalDate.now());
+			try (ResultSet rs = stmt.executeQuery()) {
 
-		return true;
-	}
-	
-	public boolean encontraLogin(String login, String senha) {
-		
-		boolean result = false;
-		
-		for (int i = 0; this.usuarios.length > i; i++) {
-			if (usuarios[i] != null && usuarios[i].getLogin().equals(login)) {
-				result = usuarios[i].getSenha().equals(senha) ? true : false;
+				while (rs.next()) {
+					usuario = new Usuario();
+					usuario.setId(id);
+					usuario.setNome(rs.getString("nome"));
+					usuario.setEndereco(rs.getString("endereco"));
+					usuario.setCpf(rs.getString("cpf"));
+					usuario.setTelefone(rs.getString("telefone"));
+					usuario.setDataCriacao(rs.getDate("dataCriacao").toLocalDate());
+					usuario.setDataModificacao(rs.getDate("dataModificacao").toLocalDate());
+					usuario.setLogin(rs.getString("login"));
+					usuario.setSenha(rs.getString("senha"));
+				}
+				rs.close();
 			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
 		}
-		
-		return result;
+
+		return usuario;
+	}
+
+	// Recebe um objeto do tipo usuario contendo o id e as informaï¿½ï¿½es que serï¿½o
+	// atualizadas
+	public int atualizaUsuario(Usuario u) {
+
+		String update = "UPDATE usuario SET nome = ?, endereco = ?, cpf = ?, telefone = ?, dataCriacao = ?, dataModificacao = ?, login = ?, senha = ? WHERE id = ?";
+		int resultado = 0;
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(update)) {
+
+			stmt.setString(1, u.getNome());
+			stmt.setString(2, u.getEndereco());
+			stmt.setString(3, u.getCpf());
+			stmt.setString(4, u.getTelefone());
+			stmt.setDate(5, Date.valueOf(u.getDataCriacao()));
+			stmt.setDate(6, Date.valueOf(u.getDataModificacao()));
+			stmt.setString(7, u.getLogin());
+			stmt.setString(8, u.getSenha());
+			stmt.setLong(9, u.getId());
+
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return resultado;
+	}
+
+	// Recebe o id do usuario e o exclui do banco de dados
+	public int deletaUsuario(int id) {
+		String delete = "DELETE FROM usuario WHERE id = ?";
+		int resultado = 0;
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(delete)) {
+
+			stmt.setLong(1, id);
+			resultado = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
+		}
+
+		return resultado;
+	}
+
+	// Lista todos os usuarios cadastrados
+	public List<Usuario> listarUsuarios() {
+
+		List<Usuario> usuarios = null;
+
+		String select = "SELECT id,nome,endereco,cpf,telefone,dataCriacao,dataModificacao,login,senha FROM usuario";
+
+		try (Connection connection = new ConnectionFactory().getConnection();
+				PreparedStatement stmt = connection.prepareStatement(select)) {
+
+			try (ResultSet rs = stmt.executeQuery()) {
+				usuarios = new ArrayList<Usuario>();
+				while (rs.next()) {
+					Usuario usuario = new Usuario(rs.getInt("id"), rs.getString("nome"), rs.getString("endereco"),
+							rs.getString("cpf"), rs.getString("telefone"), rs.getString("login"), rs.getString("senha"),
+							rs.getDate("dataCriacao").toLocalDate(), rs.getDate("dataModificacao").toLocalDate());
+
+					usuarios.add(usuario);
+				}
+				rs.close();
+			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error:" + e);
+		}
+
+		return usuarios;
+	}
+
+	public Usuario[] getClientes() {
+		return null;
 	}
 
 }

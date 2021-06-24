@@ -13,9 +13,22 @@ public class Cliente {
 	private LocalDate dataCriacao;
 	private LocalDate dataModificacao;
 	
+	public Cliente() {};
+	
 	public Cliente(int id) {
 		super();
 		this.id = id;
+	}
+	
+	public Cliente(String nome, String endereco, String cpf, String telefone, LocalDate dataCriacao,
+			LocalDate dataModificacao) {
+		super();
+		this.nome = nome;
+		this.endereco = endereco;
+		this.cpf = cpf;
+		this.telefone = telefone;
+		this.dataCriacao = dataCriacao;
+		this.dataModificacao = dataModificacao;
 	}
 
 	public Cliente(int id, String nome, String endereco, String cpf, String telefone, LocalDate dataCriacao,
